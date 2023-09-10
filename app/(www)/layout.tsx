@@ -11,6 +11,7 @@ import {
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { urls } from "@/config/urls";
+import { Button } from "@/components/ui/button";
 
 type WWWLayoutProps = {
     children: ReactNode;
@@ -19,7 +20,15 @@ type WWWLayoutProps = {
 export default function WWWLayout({ children }: WWWLayoutProps) {
     return (
         <Fragment>
-            <Header className="container" LinksElement={LinksElement} />
+            <Header
+                className="container"
+                LinksElement={LinksElement}
+                AuthElement={() => (
+                    <Button asChild>
+                        <Link href={urls.app.dashboard}>Dashboard</Link>
+                    </Button>
+                )}
+            />
             {children}
         </Fragment>
     );

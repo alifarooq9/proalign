@@ -7,4 +7,7 @@ export const urls = {
         pricing: "/pricing",
         support: "/support",
     },
+    app: {
+        dashboard: "/dashboard",
+    },
 };
