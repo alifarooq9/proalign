@@ -3,4 +3,8 @@ export const urls = {
         login: "/auth/login",
         register: "/auth/register",
     },
+    www: {
+        pricing: "/pricing",
+        support: "/support",
+    },
 };
