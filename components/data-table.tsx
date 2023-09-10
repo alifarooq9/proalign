@@ -9,7 +9,6 @@ import {
     ChevronsDownIcon,
     ChevronsRightIcon,
     EyeOffIcon,
-    MoreVerticalIcon,
     PlusCircleIcon,
     Settings2Icon,
     XIcon,
@@ -139,40 +138,6 @@ export function DataTableColumnHeader<TData, TValue>({
     );
 }
 
-interface DataTableRowActionsProps<TData> {
-    row: Row<TData>;
-}
-
-export function DataTableRowActions<TData>({
-    row,
-}: DataTableRowActionsProps<TData>) {
-    const task = row.original;
-
-    return (
-        <DropdownMenu>
-            <div className="flex w-full place-content-end place-items-center">
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant="ghost"
-                        className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                    >
-                        <MoreVerticalIcon className="h-4 w-4" />
-                        <span className="sr-only">Open menu</span>
-                    </Button>
-                </DropdownMenuTrigger>
-            </div>
-
-            <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
-    );
-}
-
 interface DataTablePaginationProps<TData> {
     table: Table<TData>;
 }
@@ -277,7 +242,7 @@ export function DataTableViewOptions<TData>({
                     View
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[150px]">
+            <DropdownMenuContent align="end" className="min-w-[150px]">
                 <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {table

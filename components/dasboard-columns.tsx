@@ -2,10 +2,7 @@
 
 import { Project } from "@/types/project";
 import { ColumnDef } from "@tanstack/react-table";
-import {
-    DataTableColumnHeader,
-    DataTableRowActions,
-} from "@/components/data-table";
+import { DataTableColumnHeader } from "@/components/data-table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 
@@ -23,8 +20,6 @@ export const dashboardColums: ColumnDef<Project>[] = [
             <DataTableColumnHeader column={column} title="Name" />
         ),
         cell: ({ row }) => <div className="truncate">{row.original.name}</div>,
-        enableHiding: false,
-        enableSorting: false,
     },
     {
         accessorKey: "description",
@@ -77,6 +72,18 @@ export const dashboardColums: ColumnDef<Project>[] = [
         },
     },
     {
+        id: "creationDate",
+        accessorKey: "createdAt",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Creation Date" />
+        ),
+        cell: ({ row }) => (
+            <div className="truncate">
+                {format(new Date(row.original.createdAt), "PPP")}
+            </div>
+        ),
+    },
+    {
         id: "expectedCompletionDate",
         accessorKey: "expectedCompletionDate",
         header: ({ column }) => (
@@ -87,9 +94,5 @@ export const dashboardColums: ColumnDef<Project>[] = [
                 {format(new Date(row.original.expectedCompletionDate), "PPP")}
             </div>
         ),
-    },
-    {
-        id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} />,
     },
 ];

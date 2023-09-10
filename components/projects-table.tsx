@@ -22,7 +22,7 @@ export default function ProjectsTable() {
         },
         {
             id: "Thisisdaddad",
-            name: "Project 1",
+            name: "Project 2",
             description: "This is a description",
             status: "Cancelled",
             badge: "Badge",
