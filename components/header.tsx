@@ -9,7 +9,7 @@ import { currentUser } from "@clerk/nextjs";
 
 type HeaderProps = {
     className?: string;
-    LinksElement: () => JSX.Element;
+    LinksElement?: () => JSX.Element;
     AuthElement: () => JSX.Element;
 };
 
@@ -32,7 +32,7 @@ export default function Header({
                         <span className="font-bold">PRO ALIGN</span>
                     </Link>
 
-                    <LinksElement />
+                    {LinksElement && <LinksElement />}
                 </nav>
 
                 <Suspense fallback={<AuthSkeleton />}>
