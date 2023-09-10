@@ -19,7 +19,7 @@ export default authMiddleware({
             );
         }
     },
-    publicRoutes: ["/"],
+    publicRoutes: ["/", "/api"],
 });
 
 export const config = {
