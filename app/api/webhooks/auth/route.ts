@@ -2,6 +2,8 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { env } from "@/env/server";
+import { api } from "@/convex/_generated/api";
+import { convex } from "@/components/convex-provider";
 
 export async function POST(req: Request) {
     const WEBHOOK_SECRET = env.WEBHOOK_SECRET;
@@ -45,8 +47,21 @@ export async function POST(req: Request) {
     const { id } = evt.data;
     const eventType = evt.type;
 
-    console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-    console.log("Webhook body:", body);
+    // Handle the event
+    switch (eventType) {
+        case "user.created":
+            // Handle user created event
+            const createUser = await convex.mutation(api.user.create, {
+                clerkId: id as string,
+                email: evt.data.email_addresses.map(
+                    (email) => email.email_address,
+                ),
+                firstName: evt.data.first_name,
+                lastName: evt.data.last_name,
+            });
+
+            return new Response(createUser, { status: 200 });
+    }
 
     return new Response("", { status: 201 });
 }
