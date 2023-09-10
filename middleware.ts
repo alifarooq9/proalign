@@ -4,6 +4,8 @@ import { urls } from "@/config/urls";
 
 export default authMiddleware({
     afterAuth(auth, req, evt) {
+        if (auth.isPublicRoute) return NextResponse.next();
+
         const origin = req.nextUrl.origin;
         const path = req.nextUrl.pathname;
 
@@ -13,13 +15,13 @@ export default authMiddleware({
             );
         }
 
-        if (!auth.userId && !path.startsWith("/auth") && !auth.isPublicRoute) {
+        if (!auth.userId && !path.startsWith("/auth")) {
             return NextResponse.redirect(
                 new URL(`${origin}${urls.auth.login}`),
             );
         }
     },
-    publicRoutes: ["/", "/api"],
+    publicRoutes: ["/", "/api/webhooks/auth"],
 });
 
 export const config = {

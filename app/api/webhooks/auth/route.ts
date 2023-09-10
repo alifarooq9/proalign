@@ -3,9 +3,9 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { env } from "@/env/server";
 import { api } from "@/convex/_generated/api";
-import { convex } from "@/components/convex-provider";
+import { convex } from "@/lib/convex";
 
-export async function POST(req: Request) {
+async function handler(req: Request) {
     const WEBHOOK_SECRET = env.WEBHOOK_SECRET;
 
     const headerPayload = headers();
@@ -44,7 +44,6 @@ export async function POST(req: Request) {
     }
 
     // Get the ID and type
-    const { id } = evt.data;
     const eventType = evt.type;
 
     // Handle the event
@@ -52,16 +51,31 @@ export async function POST(req: Request) {
         case "user.created":
             // Handle user created event
             const createUser = await convex.mutation(api.user.create, {
-                clerkId: id as string,
+                clerkId: evt.data.id,
                 email: evt.data.email_addresses.map(
                     (email) => email.email_address,
                 ),
-                firstName: evt.data.first_name,
-                lastName: evt.data.last_name,
+                firstName: evt.data.first_name || null,
+                lastName: evt.data.last_name || null,
             });
 
-            return new Response(createUser, { status: 200 });
+            return new Response(createUser, { status: 201 });
+
+        case "user.updated":
+            // Handle user updated event
+            const updateUser = await convex.mutation(api.user.update, {
+                clerkId: evt.data.id,
+                email: evt.data.email_addresses.map(
+                    (email) => email.email_address,
+                ),
+                firstName: evt.data.first_name || null,
+                lastName: evt.data.last_name || null,
+            });
+
+            return new Response(updateUser, { status: 201 });
     }
 
     return new Response("", { status: 201 });
 }
+
+export { handler as GET, handler as POST, handler as PUT, handler as DELETE };

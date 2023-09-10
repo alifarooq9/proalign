@@ -4,9 +4,9 @@ import { v } from "convex/values";
 export const create = mutation({
     args: {
         clerkId: v.string(),
-        email: v.array(v.string()),
-        firstName: v.string(),
-        lastName: v.string(),
+        email: v.optional(v.array(v.string())),
+        firstName: v.optional(v.union(v.string(), v.null())),
+        lastName: v.optional(v.union(v.string(), v.null())),
     },
     handler: async (ctx, args) => {
         const createUser = await ctx.db.insert("users", {
@@ -22,9 +22,9 @@ export const create = mutation({
 export const update = mutation({
     args: {
         clerkId: v.string(),
-        email: v.array(v.string()),
-        firstName: v.string(),
-        lastName: v.string(),
+        email: v.optional(v.array(v.string())),
+        firstName: v.optional(v.union(v.string(), v.null())),
+        lastName: v.optional(v.union(v.string(), v.null())),
     },
     handler: async (ctx, args) => {
         const user = await ctx.db
