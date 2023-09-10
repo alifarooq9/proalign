@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { urls } from "@/config/urls";
 import { Button } from "@/components/ui/button";
+import { siteFeatures } from "@/config/sideContent";
 
 type WWWLayoutProps = {
     children: ReactNode;
@@ -43,7 +44,7 @@ function LinksElement() {
                     <NavigationMenuContent>
                         <NavigationMenuLink>
                             <ul className="grid min-w-[300px] grid-cols-1 divide-y px-3 py-1">
-                                {features.map((feature) => (
+                                {siteFeatures.map((feature) => (
                                     <li
                                         key={feature.title}
                                         className="px-2 py-3"
@@ -51,7 +52,7 @@ function LinksElement() {
                                         <h3 className="text-sm font-semibold">
                                             {feature.title}
                                         </h3>
-                                        <p className="text-muted-foreground line-clamp-3 text-sm font-light">
+                                        <p className="line-clamp-3 text-sm font-light text-muted-foreground">
                                             {feature.description}
                                         </p>
                                     </li>
@@ -82,26 +83,3 @@ function LinksElement() {
         </NavigationMenu>
     );
 }
-
-const features = [
-    {
-        title: "Collaboration",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique",
-    },
-    {
-        title: "Task Management",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique",
-    },
-    {
-        title: "Whiteboard",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique",
-    },
-    {
-        title: "Notion like Pages",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique",
-    },
-];
