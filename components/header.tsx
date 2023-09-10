@@ -5,22 +5,12 @@ import { Icons } from "@/components/ui/icon";
 import { urls } from "@/config/urls";
 import { cn } from "@/lib/utils";
 
-export type HeaderLink = {
-    id: string;
-    JSXElement: () => JSX.Element;
-};
-
 type HeaderProps = {
-    links: HeaderLink[];
     className?: string;
-    linksContainerClassName?: string;
+    LinksElement: () => JSX.Element;
 };
 
-export default function Header({
-    links,
-    className,
-    linksContainerClassName,
-}: HeaderProps) {
+export default function Header({ className, LinksElement }: HeaderProps) {
     return (
         <HeaderShell className={className}>
             <nav className="flex place-items-center space-x-8">
@@ -29,11 +19,7 @@ export default function Header({
                     <span className="font-bold">PRO ALIGN</span>
                 </Link>
 
-                <div className={cn("hidden md:block", linksContainerClassName)}>
-                    {links.map((link) => (
-                        <link.JSXElement key={link.id} />
-                    ))}
-                </div>
+                <LinksElement />
             </nav>
 
             <section className="flex place-items-center space-x-2">

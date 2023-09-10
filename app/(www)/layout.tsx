@@ -1,4 +1,4 @@
-import Header, { HeaderLink } from "@/components/header";
+import Header from "@/components/header";
 import Link from "next/link";
 import { Fragment, ReactNode } from "react";
 
@@ -6,30 +6,21 @@ type WWWLayoutProps = {
     children: ReactNode;
 };
 
-const headerLinks: HeaderLink[] = [
-    {
-        id: "about",
-        JSXElement: () => <Link href="/">About</Link>,
-    },
-    {
-        id: "pricing",
-        JSXElement: () => <Link href="/">Pricing</Link>,
-    },
-    {
-        id: "contact",
-        JSXElement: () => <Link href="/">Contact</Link>,
-    },
-];
-
 export default function WWWLayout({ children }: WWWLayoutProps) {
     return (
         <Fragment>
-            <Header
-                links={headerLinks}
-                className="container"
-                linksContainerClassName="space-x-4"
-            />
+            <Header className="container" LinksElement={LinksElement} />
             {children}
         </Fragment>
+    );
+}
+
+function LinksElement() {
+    return (
+        <div className="hidden md:flex md:place-items-center md:space-x-4">
+            <Link href="/">About</Link>
+            <Link href="/">Pricing</Link>
+            <Link href="/">Contact</Link>
+        </div>
     );
 }
