@@ -2,6 +2,7 @@ import Providers from "@/components/providers";
 import "./globals.css";
 import type { Metadata } from "next";
 import { bricolageGrotesque } from "@/lib/fonts";
+import Background from "@/components/ui/background";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -16,7 +17,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={bricolageGrotesque.className}>
-                <Providers>{children}</Providers>
+                <Providers>
+                    {children}
+                    <Background />
+                </Providers>
             </body>
         </html>
     );

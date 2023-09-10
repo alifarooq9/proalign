@@ -8,8 +8,8 @@ type ProvidersProps = {
 
 export default function Providers({ children }: ProvidersProps) {
     return (
-        <ClerkProvider>
-            <ThemeProvider>{children}</ThemeProvider>
-        </ClerkProvider>
+        <ThemeProvider>
+            <ClerkProvider>{children}</ClerkProvider>
+        </ThemeProvider>
     );
 }
