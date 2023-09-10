@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { bricolageGrotesque } from "@/lib/fonts";
 import Background from "@/components/ui/background";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -16,7 +17,12 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={bricolageGrotesque.className}>
+            <body
+                className={cn(
+                    bricolageGrotesque.className,
+                    "w-screen overflow-x-hidden",
+                )}
+            >
                 <Providers>
                     {children}
                     <Background />
