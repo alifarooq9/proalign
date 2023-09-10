@@ -52,7 +52,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import {
     Select,
     SelectContent,
@@ -507,11 +507,13 @@ export function DataTableFacetedFilter<TData, TValue>({
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    onClickRow?: (projectId: string) => void;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    onClickRow,
 }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = useState({});
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
@@ -571,6 +573,13 @@ export function DataTable<TData, TValue>({
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
+                                    className={cn(
+                                        onClickRow !== undefined &&
+                                            "cursor-pointer",
+                                    )}
+                                    onClick={() =>
+                                        onClickRow?.(row.getValue("id"))
+                                    }
                                     data-state={
                                         row.getIsSelected() && "selected"
                                     }
@@ -591,7 +600,7 @@ export function DataTable<TData, TValue>({
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    No results found.
                                 </TableCell>
                             </TableRow>
                         )}

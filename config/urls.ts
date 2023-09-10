@@ -9,5 +9,6 @@ export const urls = {
     },
     app: {
         dashboard: "/dashboard",
+        project: (id: string) => `/project/${id}`,
     },
 };

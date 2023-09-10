@@ -5,14 +5,14 @@ import { ColumnDef } from "@tanstack/react-table";
 import {
     DataTableColumnHeader,
     DataTableRowActions,
-} from "@/components/ui/data-table";
+} from "@/components/data-table";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 
-export const columns: ColumnDef<Project>[] = [
+export const dashboardColums: ColumnDef<Project>[] = [
     {
         id: "id",
-        accessorKey: "#",
+        accessorKey: "id",
         header: () => <div className="text-center">ID</div>,
         cell: ({ row }) => <div className="text-center">{row.index + 1}</div>,
     },
@@ -35,8 +35,8 @@ export const columns: ColumnDef<Project>[] = [
             const badge = row.original.badge;
 
             return (
-                <div className="flex w-full space-x-2 ">
-                    {badge && <Badge variant="outline">{badge}</Badge>}
+                <div className="flex w-full min-w-[300px] max-w-[500px] space-x-2">
+                    {badge && <Badge variant="default">{badge}</Badge>}
                     <span className="w-full truncate font-medium">
                         {row.original.description}
                     </span>
