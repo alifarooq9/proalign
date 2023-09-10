@@ -1,4 +1,6 @@
 import Header from "@/components/header";
+import { urls } from "@/config/urls";
+import { UserButton } from "@clerk/nextjs";
 import { Fragment, ReactNode } from "react";
 
 type AppLayoutProps = {
@@ -15,5 +17,5 @@ export default function AppLayout({ children }: AppLayoutProps) {
 }
 
 function AuthElement() {
-    return <div>Auth</div>;
+    return <UserButton afterSignOutUrl={urls.auth.login} />;
 }
