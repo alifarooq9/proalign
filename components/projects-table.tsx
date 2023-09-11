@@ -30,7 +30,7 @@ export default function ProjectsTable() {
 
 function ProjectEmptyState() {
     return (
-        <div className="rounded-lg border-2 border-dashed py-16 text-center">
+        <div className="rounded-lg border-2 border-dashed bg-background py-16 text-center">
             <FolderPlusIcon className="mx-auto h-12 w-12" strokeWidth={1} />
             <h3 className="mt-2 text-sm font-semibold">No projects</h3>
             <p className="mt-1 text-sm text-muted-foreground">
