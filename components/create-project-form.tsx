@@ -46,12 +46,10 @@ const createProjectSchema = z.object({
         .string()
         .min(3, "Project name must be at least 3 characters.")
         .max(50, "Project name must be less than 50 characters."),
-
     description: z
         .string()
-        .max(500, "Project description must be less than 500 characters.")
-        .optional(),
-
+        .min(3, "Project name must be at least 3 characters.")
+        .max(500, "Project description must be less than 500 characters."),
     expectedCompletionDate: z.date(),
     badge: z.string().optional(),
     status: ProjectStatusSchema,
