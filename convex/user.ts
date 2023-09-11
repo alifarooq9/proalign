@@ -49,3 +49,22 @@ export const update = mutation({
         return updateUser;
     },
 });
+
+export const deleteById = mutation({
+    args: {
+        clerkId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const user = await ctx.db
+            .query("users")
+            .filter((q) => q.eq(q.field("clerkId"), args.clerkId))
+            .unique();
+
+        if (!user) {
+            throw new Error("User not found");
+        }
+
+        const deleteUser = await ctx.db.delete(user._id);
+        return deleteUser;
+    },
+});

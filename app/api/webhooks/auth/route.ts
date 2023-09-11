@@ -46,6 +46,11 @@ async function handler(req: Request) {
     // Get the ID and type
     const eventType = evt.type;
 
+    if (!evt.data)
+        return new Response("Error occured", {
+            status: 400,
+        });
+
     // Handle the event
     switch (eventType) {
         case "user.created":
@@ -75,6 +80,14 @@ async function handler(req: Request) {
             });
 
             return new Response(updateUser, { status: 201 });
+
+        case "user.deleted":
+            //handle user update event
+            const deleteUser = await convex.mutation(api.user.deleteById, {
+                clerkId: evt.data.id as string,
+            });
+
+            return new Response(deleteUser, { status: 202 });
     }
 
     return new Response("", { status: 201 });
