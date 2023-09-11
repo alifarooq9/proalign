@@ -5,9 +5,12 @@ import {
 } from "@/components/create-project-drawer";
 import ProjectsTable from "@/components/projects-table";
 import { Button } from "@/components/ui/button";
+import { currentUser } from "@clerk/nextjs";
 import { PlusCircleIcon } from "lucide-react";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+    const user = await currentUser();
+
     return (
         <main className="container space-y-10">
             <AppHeader
@@ -22,7 +25,7 @@ export default function DashboardPage() {
                 </CreateProjectDrawerTrigger>
             </AppHeader>
 
-            <ProjectsTable />
+            <ProjectsTable userId={user?.id as string} />
 
             <CreateProjectDrawer />
         </main>

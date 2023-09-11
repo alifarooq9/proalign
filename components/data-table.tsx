@@ -82,12 +82,14 @@ interface DataTableColumnHeaderProps<TData, TValue>
     extends React.HTMLAttributes<HTMLDivElement> {
     column: Column<TData, TValue>;
     title: string;
+    align?: "left" | "center" | "right";
 }
 
 export function DataTableColumnHeader<TData, TValue>({
     column,
     title,
     className,
+    align,
 }: DataTableColumnHeaderProps<TData, TValue>) {
     if (!column.getCanSort()) {
         return <div className={cn(className)}>{title}</div>;
@@ -96,22 +98,29 @@ export function DataTableColumnHeader<TData, TValue>({
     return (
         <div className={cn("flex items-center space-x-2", className)}>
             <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        className="-ml-3 data-[state=open]:bg-accent"
-                    >
-                        <span>{title}</span>
-                        {column.getIsSorted() === "desc" ? (
-                            <ArrowDownIcon className="ml-2 h-4 w-4" />
-                        ) : column.getIsSorted() === "asc" ? (
-                            <ArrowUpIcon className="ml-2 h-4 w-4" />
-                        ) : (
-                            <ArrowDownIcon className="ml-2 h-4 w-4" />
-                        )}
-                    </Button>
-                </DropdownMenuTrigger>
+                <div
+                    className={cn(
+                        "flex w-full items-center",
+                        `justify-${align}`,
+                    )}
+                >
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            className="data-[state=open]:bg-accent"
+                        >
+                            <span>{title}</span>
+                            {column.getIsSorted() === "desc" ? (
+                                <ArrowDownIcon className="ml-2 h-4 w-4" />
+                            ) : column.getIsSorted() === "asc" ? (
+                                <ArrowUpIcon className="ml-2 h-4 w-4" />
+                            ) : (
+                                <ArrowDownIcon className="ml-2 h-4 w-4" />
+                            )}
+                        </Button>
+                    </DropdownMenuTrigger>
+                </div>
                 <DropdownMenuContent align="start">
                     <DropdownMenuItem
                         onClick={() => column.toggleSorting(false)}

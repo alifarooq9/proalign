@@ -2,17 +2,29 @@
 
 import { DataTable } from "@/components/data-table";
 import { dashboardColums } from "@/components/dasboard-columns";
-import { Project } from "@/types/project";
+import { Project, ProjectPriority, ProjectStatus } from "@/types/project";
 import { useRouter } from "next/navigation";
 import { urls } from "@/config/urls";
 import { FolderPlusIcon, PlusCircleIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { CreateProjectDrawerTrigger } from "./create-project-drawer";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-export default function ProjectsTable() {
+type ProjectTableProps = {
+    userId: string;
+};
+
+export default function ProjectsTable({ userId }: ProjectTableProps) {
     const router = useRouter();
 
-    const projects: Project[] = [];
+    const projects = useQuery(api.project.getAll, {
+        userId,
+    });
+
+    console.log(projects);
+
+    if (!projects) return <div>Loading...</div>;
 
     if (projects.length === 0) return <ProjectEmptyState />;
 
@@ -20,9 +32,22 @@ export default function ProjectsTable() {
         router.push(urls.app.project(projectID));
     }
 
+    const projectsData: Project[] = projects.map((project) => ({
+        name: project.name,
+        description: project.description,
+        badge: project.badge,
+        expectedCompletionDate: project.expectedCompletionDate,
+        id: project._id,
+        priority: project.priority as ProjectPriority,
+        status: project.status as ProjectStatus,
+        _creationTime: new Date().toLocaleString(),
+        owners: project.owners,
+        users: project.users,
+    }));
+
     return (
         <DataTable
-            data={projects}
+            data={projectsData}
             columns={dashboardColums}
             onClickRow={onClickRow}
         />

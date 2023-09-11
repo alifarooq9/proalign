@@ -25,6 +25,10 @@ export default defineSchema({
         firstName: v.optional(v.union(v.string(), v.null())),
         lastName: v.optional(v.union(v.string(), v.null())),
         imageUrl: v.optional(v.union(v.string(), v.null())),
-    }),
-    projects: defineTable(projectSchema),
+    }).index("users", ["email", "clerkId"]),
+    projects: defineTable(projectSchema)
+        .index("projects", ["users", "owners"])
+        .searchIndex("project_users", {
+            searchField: "users",
+        }),
 });

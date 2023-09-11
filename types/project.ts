@@ -28,8 +28,11 @@ export type Project = {
     id?: string;
     name: string;
     description: string;
-    badge: string | undefined;
+    badge?: string;
     status: ProjectStatus;
     priority: ProjectPriority;
+    _creationTime?: string;
     expectedCompletionDate: string;
+    users?: string[];
+    owners?: string[];
 };
