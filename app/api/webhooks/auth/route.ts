@@ -57,6 +57,7 @@ async function handler(req: Request) {
                 ),
                 firstName: evt.data.first_name || null,
                 lastName: evt.data.last_name || null,
+                imageUrl: evt.data.image_url || null,
             });
 
             return new Response(createUser, { status: 201 });
@@ -70,6 +71,7 @@ async function handler(req: Request) {
                 ),
                 firstName: evt.data.first_name || null,
                 lastName: evt.data.last_name || null,
+                imageUrl: evt.data.image_url || null,
             });
 
             return new Response(updateUser, { status: 201 });

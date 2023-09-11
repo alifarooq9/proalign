@@ -7,6 +7,7 @@ export const create = mutation({
         email: v.optional(v.array(v.string())),
         firstName: v.optional(v.union(v.string(), v.null())),
         lastName: v.optional(v.union(v.string(), v.null())),
+        imageUrl: v.optional(v.union(v.string(), v.null())),
     },
     handler: async (ctx, args) => {
         const createUser = await ctx.db.insert("users", {
@@ -14,6 +15,7 @@ export const create = mutation({
             firstName: args.firstName,
             lastName: args.lastName,
             clerkId: args.clerkId,
+            imageUrl: args.imageUrl,
         });
         return createUser;
     },
@@ -25,6 +27,7 @@ export const update = mutation({
         email: v.optional(v.array(v.string())),
         firstName: v.optional(v.union(v.string(), v.null())),
         lastName: v.optional(v.union(v.string(), v.null())),
+        imageUrl: v.optional(v.union(v.string(), v.null())),
     },
     handler: async (ctx, args) => {
         const user = await ctx.db
@@ -40,6 +43,7 @@ export const update = mutation({
             email: args.email,
             firstName: args.firstName,
             lastName: args.lastName,
+            imageUrl: args.imageUrl,
         });
 
         return updateUser;

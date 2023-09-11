@@ -7,5 +7,6 @@ export default defineSchema({
         email: v.optional(v.array(v.string())),
         firstName: v.optional(v.union(v.string(), v.null())),
         lastName: v.optional(v.union(v.string(), v.null())),
+        imageUrl: v.optional(v.union(v.string(), v.null())),
     }),
 });
