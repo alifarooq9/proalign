@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { urls } from "@/config/urls";
 import { FolderPlusIcon, PlusCircleIcon } from "lucide-react";
 import { Button } from "./ui/button";
+import { CreateProjectDrawerTrigger } from "./create-project-drawer";
 
 export default function ProjectsTable() {
     const router = useRouter();
@@ -37,10 +38,12 @@ function ProjectEmptyState() {
                 Get started by creating a new project.
             </p>
             <div className="mt-6">
-                <Button>
-                    <PlusCircleIcon className="mr-2 h-4 w-4" />
-                    <span>Create Project</span>
-                </Button>
+                <CreateProjectDrawerTrigger asChild>
+                    <Button>
+                        <PlusCircleIcon className="mr-2 h-4 w-4" />
+                        <span>Create Project</span>
+                    </Button>
+                </CreateProjectDrawerTrigger>
             </div>
         </div>
     );
