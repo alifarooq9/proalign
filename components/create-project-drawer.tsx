@@ -7,8 +7,9 @@ import {
     DrawerTitle,
 } from "@/components/ui/drawer";
 import { Slot } from "@radix-ui/react-slot";
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes } from "react";
 import { create } from "zustand";
+import CreateProjectForm from "@/components/create-project-form";
 
 type DrawerStore = {
     isOpen: boolean;
@@ -28,8 +29,15 @@ export function CreateProjectDrawer() {
             <DrawerContent>
                 <DrawerIcon />
 
-                <div className="min-h-[300px]">
-                    <DrawerTitle>Create Project</DrawerTitle>
+                <div className="h-[calc(100vh-8rem)] overflow-y-auto">
+                    <div className="container  max-w-6xl space-y-1 ">
+                        <DrawerTitle>Create Project</DrawerTitle>
+                        <p className="text-muted-foreground">
+                            Enter your project details.
+                        </p>
+
+                        <CreateProjectForm />
+                    </div>
                 </div>
             </DrawerContent>
         </DrawerRoot>
