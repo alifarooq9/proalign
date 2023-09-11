@@ -25,12 +25,11 @@ export type ProjectPriority = z.infer<typeof ProjectPrioritySchema>;
 export const projectPriorities: ProjectPriority[] = ["Low", "Medium", "High"];
 
 export type Project = {
-    id: string;
+    id?: string;
     name: string;
     description: string;
-    badge: string;
+    badge: string | undefined;
     status: ProjectStatus;
     priority: ProjectPriority;
     expectedCompletionDate: string;
-    createdAt: string;
 };

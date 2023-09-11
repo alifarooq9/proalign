@@ -14,11 +14,13 @@ import CreateProjectForm from "@/components/create-project-form";
 type DrawerStore = {
     isOpen: boolean;
     setIsOpen: (isOpen: boolean) => void;
+    closeDrawer: () => void;
 };
 
 export const useDrawerStore = create<DrawerStore>()((set) => ({
     isOpen: false,
     setIsOpen: (isOpen) => set({ isOpen }),
+    closeDrawer: () => set({ isOpen: false }),
 }));
 
 export function CreateProjectDrawer() {

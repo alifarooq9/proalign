@@ -15,12 +15,7 @@ export const projectSchema = {
     priority: v.union(v.literal("Low"), v.literal("Medium"), v.literal("High")),
     expectedCompletionDate: v.string(),
     users: v.array(v.string()),
-    owner: v.object({
-        id: v.string(),
-        firstName: v.string(),
-        lastName: v.string(),
-        email: v.string(),
-    }),
+    owners: v.array(v.string()),
 };
 
 export default defineSchema({

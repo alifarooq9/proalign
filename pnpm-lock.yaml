@@ -104,6 +104,9 @@ dependencies:
   react-hook-form:
     specifier: ^7.46.1
     version: 7.46.1(react@18.2.0)
+  sonner:
+    specifier: ^0.7.1
+    version: 0.7.1(react-dom@18.2.0)(react@18.2.0)
   svix:
     specifier: ^1.11.0
     version: 1.11.0
@@ -4181,6 +4184,16 @@ packages:
       map-obj: 4.3.0
       snake-case: 3.0.4
       type-fest: 2.19.0
+    dev: false
+
+  /sonner@0.7.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-awbVcBwV0xV5TN7kJEZv6Sx7Fi9JBL26vTn0FnBcf6YsyWKnyvz16I/jE6omCtBjd0/YXsPHJ//VuA5fvD2vEg==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /source-map-js@1.0.2:

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { bricolageGrotesque } from "@/lib/fonts";
 import Background from "@/components/ui/background";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toast";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -26,6 +27,7 @@ export default function RootLayout({
                 <Providers>
                     {children}
                     <Background />
+                    <Toaster />
                 </Providers>
             </body>
         </html>

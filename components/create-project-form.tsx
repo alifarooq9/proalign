@@ -39,7 +39,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-// import { CreateProject } from "@/hooks/useProjects";
+import { CreateProject } from "@/hooks/useProject";
 
 const createProjectSchema = z.object({
     name: z
@@ -70,14 +70,18 @@ export default function CreateProjectForm() {
         },
     });
 
-    // const { mutate, loading } = CreateProject();
+    const { mutate, loading } = CreateProject();
 
     const onSubmit = async (values: CreateProjectType) => {
-        // await mutate({
-        //     name: values.name,
-        //     description: values.description,
-        //     expectedCompletionDate: values.expectedCompletionDate.toString(),
-        // });
+        await mutate({
+            name: values.name,
+            description: values.description,
+            badge: values.badge,
+            expectedCompletionDate:
+                values.expectedCompletionDate.toLocaleString(),
+            priority: values.priority,
+            status: values.status,
+        });
     };
 
     const badges = ["Docs", "Open Source", "Private", "Public"];
@@ -294,15 +298,15 @@ export default function CreateProjectForm() {
                     <CreateProjectDrawerTrigger asChild>
                         <Button
                             type="button"
-                            onClick={() => {}}
+                            disabled={loading}
                             variant="ghost"
                         >
                             <XIcon className="mr-1.5 h-4 w-4" />
                             <span>Close</span>
                         </Button>
                     </CreateProjectDrawerTrigger>
-                    <Button type="submit">
-                        {false ? (
+                    <Button type="submit" disabled={loading}>
+                        {loading ? (
                             <Loader2Icon className="mr-1.5 h-4 w-4 animate-spin" />
                         ) : (
                             <PlusCircleIcon className="mr-1.5 h-4 w-4" />
