@@ -81,6 +81,7 @@ export default function CreateProjectForm() {
                 values.expectedCompletionDate.toLocaleString(),
             priority: values.priority,
             status: values.status,
+        
         });
     };
 

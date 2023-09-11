@@ -17,6 +17,7 @@ export const create = mutation({
             clerkId: args.clerkId,
             imageUrl: args.imageUrl,
         });
+
         return createUser;
     },
 });
@@ -65,6 +66,7 @@ export const deleteById = mutation({
         }
 
         const deleteUser = await ctx.db.delete(user._id);
+
         return deleteUser;
     },
 });

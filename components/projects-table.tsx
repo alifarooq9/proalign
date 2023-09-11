@@ -42,7 +42,6 @@ export default function ProjectsTable({ userId }: ProjectTableProps) {
         status: project.status as ProjectStatus,
         _creationTime: new Date().toLocaleString(),
         owners: project.owners,
-        users: project.users,
     }));
 
     return (

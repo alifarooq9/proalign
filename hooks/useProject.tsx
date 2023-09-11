@@ -24,14 +24,14 @@ export function CreateProject() {
 
         setLoading(true);
 
-        return await createProjectMutate({
+        const handleCreateProject = await createProjectMutate({
             name: project.name,
             description: project.description,
             expectedCompletionDate: project.expectedCompletionDate,
             owners: [userId as string],
+            userId: userId as string,
             priority: project.priority,
             status: project.status,
-            users: [userId as string],
             badge: project.badge,
         })
             .then((res) => {
@@ -41,11 +41,13 @@ export function CreateProject() {
             })
             .catch((err) => {
                 toast.error("Something went wrong.");
-                console.log(err);
+                throw new Error(err);
             })
             .finally(() => {
                 setLoading(false);
             });
+
+        return handleCreateProject;
     }
 
     return {

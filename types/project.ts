@@ -33,6 +33,5 @@ export type Project = {
     priority: ProjectPriority;
     _creationTime?: string;
     expectedCompletionDate: string;
-    users?: string[];
     owners?: string[];
 };

@@ -14,7 +14,6 @@ export const projectSchema = {
     ),
     priority: v.union(v.literal("Low"), v.literal("Medium"), v.literal("High")),
     expectedCompletionDate: v.string(),
-    users: v.array(v.string()),
     owners: v.array(v.string()),
 };
 
@@ -26,9 +25,9 @@ export default defineSchema({
         lastName: v.optional(v.union(v.string(), v.null())),
         imageUrl: v.optional(v.union(v.string(), v.null())),
     }).index("users", ["email", "clerkId"]),
-    projects: defineTable(projectSchema)
-        .index("projects", ["users", "owners"])
-        .searchIndex("project_users", {
-            searchField: "users",
-        }),
+    projects: defineTable(projectSchema),
+    users_projects: defineTable({
+        userId: v.string(),
+        projectId: v.id("projects"),
+    }).index("users_project", ["userId"]),
 });
