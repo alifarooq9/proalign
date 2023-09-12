@@ -138,20 +138,66 @@ export const responseToRequest = mutation({
         requestId: v.string(),
     },
     handler: async (ctx, args) => {
-        if (args.response === 'accept') {
+        if (args.response === "accept") {
             const createUsersProject = await ctx.db.insert("users_projects", {
                 userId: args.userId,
                 projectId: args.projectId as Id<"projects">,
                 role: "canView",
-            })
+            });
 
             await ctx.db.delete(args.requestId as Id<"project_requests">);
 
             return createUsersProject;
         }
 
-        if(args.response === 'reject') {
-            return await ctx.db.delete(args.requestId as Id<"project_requests">);
+        if (args.response === "reject") {
+            return await ctx.db.delete(
+                args.requestId as Id<"project_requests">,
+            );
         }
+    },
+});
+
+export const deleteById = mutation({
+    args: { projectId: v.string(), userId: v.string() },
+    handler: async (ctx, args) => {
+        const ifUserIsOwner = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .filter((q) => q.eq(q.field("role"), "owner"))
+            .unique();
+
+        if (!ifUserIsOwner) {
+            return false;
+        }
+
+        const deleteUsersProject = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .collect();
+
+        await Promise.all(
+            deleteUsersProject.map(async (p) => {
+                await ctx.db.delete(p._id as Id<"users_projects">);
+            }),
+        );
+
+        const deleteProjectRequests = await ctx.db
+            .query("project_requests")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .collect();
+
+        await Promise.all(
+            deleteProjectRequests.map(async (p) => {
+                await ctx.db.delete(p._id as Id<"project_requests">);
+            }),
+        );
+
+        const deleteProject = await ctx.db.delete(
+            args.projectId as Id<"projects">,
+        );
+
+        return deleteProject;
     },
 });

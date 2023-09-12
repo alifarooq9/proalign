@@ -10,8 +10,8 @@ type CollaboratorsPageProps = {
 
 export default function CollaboratorsPage({ params }: CollaboratorsPageProps) {
     return (
-        <main className="container max-w-4xl space-y-6 px-0 py-6">
-            <Tabs defaultValue="members">
+        <main className="container flex w-full max-w-4xl items-center justify-center space-y-6 px-0 py-6">
+            <Tabs defaultValue="members" className="w-full">
                 <TabsList>
                     <TabsTrigger value="members">Members</TabsTrigger>
                     <TabsTrigger value="access">Access</TabsTrigger>

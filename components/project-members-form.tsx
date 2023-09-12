@@ -17,7 +17,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function ProjectMembersForm() {
     return (
-        <Card className="container max-w-4xl px-0">
+        <Card className="container w-full max-w-4xl px-0">
             <CardHeader>
                 <CardTitle>Project Collaborators</CardTitle>
                 <CardDescription>

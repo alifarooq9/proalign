@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { urls } from "@/config/urls";
 import {
+    AlertTriangleIcon,
     ChevronLeftIcon,
     FilesIcon,
     ListChecksIcon,
@@ -25,6 +26,24 @@ import {
 type ProjectSideNavProps = {
     project: Project;
 };
+
+const projectSettings = [
+    {
+        name: "Project Details",
+        icon: SettingsIcon,
+        url: urls.app.projectDetails,
+    },
+    {
+        name: "Collaborators",
+        icon: Users2Icon,
+        url: urls.app.projectCollaborators,
+    },
+    {
+        name: "Danger Zone",
+        icon: AlertTriangleIcon,
+        url: urls.app.projectDangerZone,
+    },
+];
 
 export default function Sidebar({ project }: ProjectSideNavProps) {
     return (
@@ -57,35 +76,19 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
                             Project Settings
                         </h4>
 
-                        <Button
-                            variant="outline"
-                            className="flex w-full items-center justify-start px-4"
-                            asChild
-                        >
-                            <Link
-                                href={urls.app.projectDetails(
-                                    project.id as string,
-                                )}
+                        {projectSettings.map((setting) => (
+                            <Button
+                                key={setting.name}
+                                variant="outline"
+                                className="flex w-full items-center justify-start px-4"
+                                asChild
                             >
-                                <SettingsIcon className="mr-1.5 h-4 w-4" />
-                                <span>Project Details</span>
-                            </Link>
-                        </Button>
-
-                        <Button
-                            variant="outline"
-                            className="flex w-full items-center justify-start px-4"
-                            asChild
-                        >
-                            <Link
-                                href={urls.app.projectCollaborators(
-                                    project.id as string,
-                                )}
-                            >
-                                <Users2Icon className="mr-1.5 h-4 w-4" />
-                                <span>Collaborators</span>
-                            </Link>
-                        </Button>
+                                <Link href={setting.url(project.id as string)}>
+                                    <setting.icon className="mr-1.5 h-4 w-4" />
+                                    <span>{setting.name}</span>
+                                </Link>
+                            </Button>
+                        ))}
                     </div>
 
                     <div className="mt-4 space-y-2">

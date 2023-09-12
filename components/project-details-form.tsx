@@ -100,7 +100,7 @@ export default function ProjectDetailForm({ project }: ProjectDetailFormProps) {
     };
 
     return (
-        <Card>
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle>Project Details</CardTitle>
                 <CardDescription>Manage your project here.</CardDescription>

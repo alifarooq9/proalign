@@ -1,6 +1,5 @@
 "use client";
 
-import AppHeader from "@/components/app-header";
 import ProjectDetailForm from "@/components/project-details-form";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
@@ -17,7 +16,7 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsProps) {
     });
 
     return (
-        <main className="container max-w-4xl space-y-6 px-0 py-6">
+        <main className="container flex max-w-4xl items-center justify-center space-y-6 px-0 py-6">
             {projectDetails === undefined && <div>loading...</div>}
 
             {projectDetails && (
