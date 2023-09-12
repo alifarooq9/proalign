@@ -84,7 +84,7 @@ export function ProjectRequestAccessForm({
                         <span>Dashboard</span>
                     </Link>
                 </Button>
-                <Button disabled={loading}>
+                <Button onClick={onSubmit} disabled={loading}>
                     {loading && (
                         <Loader2Icon className="mr-1.5 h-4 w-4 animate-spin" />
                     )}
