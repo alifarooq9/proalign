@@ -4,7 +4,7 @@ import { api } from "@/convex/_generated/api";
 import { convex } from "@/lib/convex";
 import { currentUser } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
-import { Fragment, ReactNode } from "react";
+import { ReactNode } from "react";
 
 type ProjectIdLayoutProps = {
     children: ReactNode;

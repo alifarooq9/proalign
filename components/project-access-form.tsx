@@ -19,12 +19,14 @@ type ProjectAccessFormProps = {
     projectId: string;
 };
 
-export default function ProjectAccessForm() {
+export default function ProjectAccessForm({
+    projectId,
+}: ProjectAccessFormProps) {
     const [copyText, setCopyText] = useState<"Copy Link" | "Copied">(
         "Copy Link",
     );
 
-    const shareUrl = generateProjectShareLink("33423423");
+    const shareUrl = generateProjectShareLink(projectId);
 
     function copyLink() {
         clearTimeout(
