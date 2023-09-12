@@ -1,6 +1,7 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { action, mutation, query } from "./_generated/server";
 import { projectSchema } from "./schema";
+import { Id } from "./_generated/dataModel";
 
 export const create = mutation({
     args: { ...projectSchema, userId: v.string() },
@@ -33,12 +34,36 @@ export const getAll = query({
             .collect();
 
         const allProjects = allUsersPorjects.map(async (p) => {
-            return await ctx.db
-                .query("projects")
-                .filter((q) => q.eq(q.field("_id"), p.projectId))
-                .collect();
+            const projects = await ctx.db.get(p.projectId);
+            return projects || [];
         });
 
         return (await Promise.all(allProjects)).flat();
+    },
+});
+
+export const getById = query({
+    args: { id: v.string() },
+
+    handler: async (ctx, args) => {
+        const project = await ctx.db.get(args.id as Id<"projects">);
+        return project;
+    },
+});
+
+export const checkIfUserHasAccess = query({
+    args: { userId: v.string(), projectId: v.string() },
+    handler: async (ctx, args) => {
+        const userProject = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .unique();
+
+        if (!userProject) {
+            return false;
+        }
+
+        return userProject.userId === args.userId;
     },
 });
