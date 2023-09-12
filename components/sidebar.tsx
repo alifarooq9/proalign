@@ -23,10 +23,6 @@ import {
     WhiteboardsSidebarContent,
 } from "@/components/project-content-siebar";
 
-type ProjectSideNavProps = {
-    project: Project;
-};
-
 const projectSettings = [
     {
         name: "Project Details",
@@ -45,7 +41,14 @@ const projectSettings = [
     },
 ];
 
-export default function Sidebar({ project }: ProjectSideNavProps) {
+type ProjectSideNavProps = {
+    project: Project;
+    userId: string;
+};
+
+export default function Sidebar({ project, userId }: ProjectSideNavProps) {
+    const isTheOwner = project.owners?.includes(userId);
+
     return (
         <aside className="sticky left-0 top-20 hidden w-72 rounded-lg border-2 border-dashed bg-background/70 backdrop-blur-[2px] xl:block xl:h-[calc(100vh-6rem)]">
             <ScrollArea className="h-full w-full rounded-lg p-4">
@@ -71,25 +74,29 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
                 </div>
 
                 <nav>
-                    <div className="mt-4 space-y-2">
-                        <h4 className="font-semibold text-muted-foreground">
-                            Project Settings
-                        </h4>
+                    {isTheOwner && (
+                        <div className="mt-4 space-y-2">
+                            <h4 className="font-semibold text-muted-foreground">
+                                Project Settings
+                            </h4>
 
-                        {projectSettings.map((setting) => (
-                            <Button
-                                key={setting.name}
-                                variant="outline"
-                                className="flex w-full items-center justify-start px-4"
-                                asChild
-                            >
-                                <Link href={setting.url(project.id as string)}>
-                                    <setting.icon className="mr-1.5 h-4 w-4" />
-                                    <span>{setting.name}</span>
-                                </Link>
-                            </Button>
-                        ))}
-                    </div>
+                            {projectSettings.map((setting) => (
+                                <Button
+                                    key={setting.name}
+                                    variant="outline"
+                                    className="flex w-full items-center justify-start px-4"
+                                    asChild
+                                >
+                                    <Link
+                                        href={setting.url(project.id as string)}
+                                    >
+                                        <setting.icon className="mr-1.5 h-4 w-4" />
+                                        <span>{setting.name}</span>
+                                    </Link>
+                                </Button>
+                            ))}
+                        </div>
+                    )}
 
                     <div className="mt-4 space-y-2">
                         <h4 className="font-semibold text-muted-foreground">

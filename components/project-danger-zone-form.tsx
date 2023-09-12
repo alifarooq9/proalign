@@ -102,7 +102,7 @@ export default function ProjectDangerZoneForm({
                                         </FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="My Project"
+                                                placeholder="DELETE MY PROJECT"
                                                 className="max-w-md"
                                                 {...field}
                                             />
@@ -117,7 +117,11 @@ export default function ProjectDangerZoneForm({
                         </div>
                     </CardContent>
                     <CardFooter className="flex place-content-end gap-3 border-t-2 border-dashed bg-muted/30 p-5 sm:px-7">
-                        <Button type="submit" variant="destructive">
+                        <Button
+                            disabled={loading}
+                            type="submit"
+                            variant="destructive"
+                        >
                             {loading && (
                                 <Loader2Icon className="mr-1.5 h-4 w-4 animate-spin" />
                             )}

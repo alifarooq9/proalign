@@ -59,6 +59,7 @@ export default async function ProjectIdLayout({
                     owners: projectDetails.owners,
                     badge: projectDetails.badge,
                 }}
+                userId={user.id as string}
             />
             <div className="flex-1">{children}</div>
         </div>
