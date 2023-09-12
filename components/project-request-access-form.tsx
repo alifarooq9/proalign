@@ -31,7 +31,7 @@ export function ProjectRequestAccessForm({
     projectDescription,
     projectName,
 }: ProjectRequestAccessFormProps) {
-    const requestAccessMutate = useMutation(api.project.request_access);
+    const requestAccessMutate = useMutation(api.project.requestProjectAccess);
     const [loading, setLoading] = useState<boolean>(false);
 
     const onSubmit = () => {

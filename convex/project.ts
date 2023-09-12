@@ -88,7 +88,7 @@ export const update = mutation({
     },
 });
 
-export const request_access = mutation({
+export const requestProjectAccess = mutation({
     args: { userId: v.string(), projectId: v.string() },
     handler: async (ctx, args) => {
         const ifAlreadyRequested = await ctx.db
@@ -105,5 +105,53 @@ export const request_access = mutation({
             projectId: args.projectId as Id<"projects">,
         });
         return projectRequest;
+    },
+});
+
+export const getRequests = query({
+    args: { projectId: v.string() },
+    handler: async (ctx, args) => {
+        const projectRequests = await ctx.db
+            .query("project_requests")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .collect();
+
+        const projectRequestsWithUserDetails = await Promise.all(
+            projectRequests.map(async (p) => {
+                const user = await ctx.db
+                    .query("users")
+                    .filter((q) => q.eq(q.field("clerkId"), p.userId))
+                    .unique();
+                return { ...p, user };
+            }),
+        );
+
+        return projectRequestsWithUserDetails.flat();
+    },
+});
+
+export const responseToRequest = mutation({
+    args: {
+        userId: v.string(),
+        projectId: v.string(),
+        response: v.union(v.literal("accept"), v.literal("reject")),
+        requestId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        if (args.response === 'accept') {
+            const createUsersProject = await ctx.db.insert("users_projects", {
+                userId: args.userId,
+                projectId: args.projectId as Id<"projects">,
+                role: "canView",
+            })
+
+            await ctx.db.delete(args.requestId as Id<"project_requests">);
+
+            return createUsersProject;
+        }
+
+        if(args.response === 'reject') {
+            return await ctx.db.delete(args.requestId as Id<"project_requests">);
+        }
     },
 });
