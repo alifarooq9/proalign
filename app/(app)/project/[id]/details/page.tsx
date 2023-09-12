@@ -17,12 +17,7 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsProps) {
     });
 
     return (
-        <main className="space-y-6">
-            <AppHeader
-                title="Project Details"
-                description="Manage your project here."
-            />
-
+        <main className="container max-w-4xl space-y-6 px-0 py-6">
             {projectDetails === undefined && <div>loading...</div>}
 
             {projectDetails && (

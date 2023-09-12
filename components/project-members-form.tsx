@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
@@ -7,7 +6,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -17,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 
-export default function ProjectCollaboratorsForm() {
+export default function ProjectMembersForm() {
     return (
         <Card className="container max-w-4xl px-0">
             <CardHeader>
@@ -27,15 +25,6 @@ export default function ProjectCollaboratorsForm() {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                {/* <div className="flex space-x-2">
-                    <Input
-                        value="http://example.com/link/to/document"
-                        readOnly
-                    />
-                    <Button variant="secondary" className="shrink-0">
-                        Copy Link
-                    </Button>
-                </div> */}
                 <div className="space-y-4">
                     <h4 className="text-sm font-medium">
                         People with ownership

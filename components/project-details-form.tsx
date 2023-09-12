@@ -3,8 +3,10 @@
 import {
     Card,
     CardContent,
+    CardDescription,
     CardFooter,
     CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import {
     Form,
@@ -100,7 +102,8 @@ export default function ProjectDetailForm({ project }: ProjectDetailFormProps) {
     return (
         <Card>
             <CardHeader>
-                <h3>Change your project details here.</h3>
+                <CardTitle>Project Details</CardTitle>
+                <CardDescription>Manage your project here.</CardDescription>
             </CardHeader>
 
             <Form {...form}>

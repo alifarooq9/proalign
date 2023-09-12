@@ -32,7 +32,6 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
             <ScrollArea className="h-full w-full rounded-lg p-4">
                 <Button
                     variant="secondary"
-                    size="lg"
                     className="flex w-full items-center justify-start px-4"
                     asChild
                 >
@@ -60,7 +59,6 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
 
                         <Button
                             variant="outline"
-                            size="lg"
                             className="flex w-full items-center justify-start px-4"
                             asChild
                         >
@@ -76,7 +74,6 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
 
                         <Button
                             variant="outline"
-                            size="lg"
                             className="flex w-full items-center justify-start px-4"
                             asChild
                         >
@@ -119,7 +116,6 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
                             >
                                 <Button
                                     variant="ghost"
-                                    size="lg"
                                     className="flex w-full items-center justify-start px-4"
                                     asChild
                                 >
@@ -148,7 +144,6 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
                             >
                                 <Button
                                     variant="ghost"
-                                    size="lg"
                                     className="flex w-full items-center justify-start px-4"
                                     asChild
                                 >
