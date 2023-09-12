@@ -11,5 +11,6 @@ export const urls = {
         dashboard: "/dashboard",
         project: (id: string) => `/project/${id}`,
         projectDetails: (id: string) => `/project/${id}/details`,
+        projectCollaborators: (id: string) => `/project/${id}/collaborators`,
     },
 };

@@ -80,9 +80,13 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
                             className="flex w-full items-center justify-start px-4"
                             asChild
                         >
-                            <Link href={urls.app.dashboard}>
+                            <Link
+                                href={urls.app.projectCollaborators(
+                                    project.id as string,
+                                )}
+                            >
                                 <Users2Icon className="mr-1.5 h-4 w-4" />
-                                <span>Collaborations</span>
+                                <span>Collaborators</span>
                             </Link>
                         </Button>
                     </div>
