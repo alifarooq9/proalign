@@ -19,6 +19,7 @@ export const create = mutation({
         await ctx.db.insert("users_projects", {
             userId: args.userId,
             projectId: createProject,
+            role: "owner",
         });
 
         return createProject;
@@ -84,5 +85,25 @@ export const update = mutation({
         });
 
         return updatedProject;
+    },
+});
+
+export const request_access = mutation({
+    args: { userId: v.string(), projectId: v.string() },
+    handler: async (ctx, args) => {
+        const ifAlreadyRequested = await ctx.db
+            .query("project_requests")
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .unique();
+
+        if (ifAlreadyRequested) {
+            return ifAlreadyRequested;
+        }
+
+        const projectRequest = await ctx.db.insert("project_requests", {
+            userId: args.userId,
+            projectId: args.projectId as Id<"projects">,
+        });
+        return projectRequest;
     },
 });

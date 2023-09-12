@@ -29,5 +29,15 @@ export default defineSchema({
     users_projects: defineTable({
         userId: v.string(),
         projectId: v.id("projects"),
-    }).index("users_project", ["userId"]),
+        role: v.union(
+            v.literal("owner"),
+            v.literal("admin"),
+            v.literal("canEdit"),
+            v.literal("canView"),
+        ),
+    }).index("users_project", ["userId", "projectId"]),
+    project_requests: defineTable({
+        userId: v.string(),
+        projectId: v.id("projects"),
+    }).index("project_requests", ["projectId"]),
 });
