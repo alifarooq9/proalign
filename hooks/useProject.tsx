@@ -55,3 +55,42 @@ export function CreateProject() {
         loading,
     };
 }
+
+export function UpdateProject() {
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const updateProjectMutate = useMutation(api.project.update);
+
+    async function mutate(project: Project) {
+        setLoading(true);
+
+        return await updateProjectMutate({
+            name: project.name,
+            description: project.description,
+            expectedCompletionDate: project.expectedCompletionDate,
+            id: project.id as string,
+            priority: project.priority,
+            status: project.status,
+            owners: [],
+            badge: project.badge,
+        })
+            .then((res) => {
+                toast.success("Project updated successfully.");
+                return res;
+            })
+            .catch((err) => {
+                console.log(err);
+
+                toast.error("Something went wrong.");
+                throw new Error(err);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }
+
+    return {
+        mutate,
+        loading,
+    };
+}

@@ -44,7 +44,7 @@ export default async function ProjectIdLayout({
     }
 
     return (
-        <div className="flex px-4 sm:px-3">
+        <div className="flex gap-5 px-4 sm:px-3">
             <Sidebar
                 project={{
                     name: projectDetails.name,

@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { CreateProject } from "@/hooks/useProject";
+import { badges } from "@/config/project";
 
 const createProjectSchema = z.object({
     name: z
@@ -81,11 +82,8 @@ export default function CreateProjectForm() {
                 values.expectedCompletionDate.toLocaleString(),
             priority: values.priority,
             status: values.status,
-        
         });
     };
-
-    const badges = ["Docs", "Open Source", "Private", "Public"];
 
     return (
         <Form {...form}>

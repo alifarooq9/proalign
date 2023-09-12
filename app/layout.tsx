@@ -21,7 +21,7 @@ export default function RootLayout({
             <body
                 className={cn(
                     bricolageGrotesque.className,
-                    "w-screen overflow-x-hidden",
+                    "w-full overflow-x-hidden",
                 )}
             >
                 <Providers>

@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { action, mutation, query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { projectSchema } from "./schema";
 import { Id } from "./_generated/dataModel";
 
@@ -65,5 +65,24 @@ export const checkIfUserHasAccess = query({
         }
 
         return userProject.userId === args.userId;
+    },
+});
+
+export const update = mutation({
+    args: {
+        ...projectSchema,
+        id: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const updatedProject = await ctx.db.patch(args.id as Id<"projects">, {
+            name: args.name,
+            description: args.description,
+            expectedCompletionDate: args.expectedCompletionDate,
+            status: args.status,
+            badge: args.badge,
+            priority: args.priority,
+        });
+
+        return updatedProject;
     },
 });
