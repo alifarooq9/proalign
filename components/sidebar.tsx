@@ -17,6 +17,10 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+    PagesSidebarContent,
+    WhiteboardsSidebarContent,
+} from "@/components/project-content-siebar";
 
 type ProjectSideNavProps = {
     project: Project;
@@ -60,7 +64,11 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
                             className="flex w-full items-center justify-start px-4"
                             asChild
                         >
-                            <Link href={"/"}>
+                            <Link
+                                href={urls.app.projectDetails(
+                                    project.id as string,
+                                )}
+                            >
                                 <SettingsIcon className="mr-1.5 h-4 w-4" />
                                 <span>Project Details</span>
                             </Link>
@@ -120,7 +128,7 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
                                 </Button>
 
                                 <AccordionContent>
-                                    {/* <Content title="Pages" contents={[]} /> */}
+                                    <PagesSidebarContent />
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
@@ -149,10 +157,7 @@ export default function Sidebar({ project }: ProjectSideNavProps) {
                                 </Button>
 
                                 <AccordionContent>
-                                    {/* <Content
-                                        title="Whiteboards"
-                                        contents={[]}
-                                    /> */}
+                                    <WhiteboardsSidebarContent />
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
