@@ -7,6 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export function generateProjectShareLink(projectId: string): string {
     return `${
-        process.env.VERCEL_URL || "http://localhost:3000"
+        process.env.VERCEL || "http://localhost:3000"
     }/share/p/${projectId}`;
 }

@@ -19,6 +19,8 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
+import { useState } from "react";
+import { Loader2Icon } from "lucide-react";
 
 type ProjectMembersFormProps = {
     projectId: string;
@@ -129,6 +131,34 @@ function ProjectUsers({
         });
     };
 
+    const removeUserFromProjectMutation = useMutation(
+        api.project.removeUserFromProject,
+    );
+
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const handleRemoveUserFromProject = async () => {
+        return await new Promise<void>(async (resolve, reject) => {
+            setLoading(true);
+            await removeUserFromProjectMutation({
+                accessId: projectAcccessId,
+                projectId,
+                ownerId: ownerId,
+            })
+                .then(() => {
+                    toast.success("User removed from project");
+                    resolve();
+                })
+                .catch(() => {
+                    toast.error("Something went wrong");
+                    reject();
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        });
+    };
+
     return (
         <div className="flex w-full flex-col items-start justify-center space-x-0 space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
             <div className="flex flex-1 items-center space-x-4">
@@ -148,7 +178,16 @@ function ProjectUsers({
                 </div>
             </div>
             <div className="flex flex-row items-center gap-2 sm:flex-row-reverse">
-                <Button variant="destructive">Remove</Button>
+                <Button
+                    disabled={loading}
+                    onClick={handleRemoveUserFromProject}
+                    variant="destructive"
+                >
+                    {loading && (
+                        <Loader2Icon className="mr-1.5 h-4 w-4 animate-spin" />
+                    )}
+                    <span>Remove</span>
+                </Button>
                 <Select defaultValue={role} onValueChange={handleOnChange}>
                     <SelectTrigger className="ml-auto w-fit min-w-[110px]">
                         <SelectValue placeholder="Select" />

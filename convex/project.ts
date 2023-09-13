@@ -257,3 +257,26 @@ export const updateRole = mutation({
         return updateRole;
     },
 });
+
+export const removeUserFromProject = mutation({
+    args: { accessId: v.string(), ownerId: v.string(), projectId: v.string() },
+    handler: async (ctx, args) => {
+        const ifUserIsOwner = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .filter((q) => q.eq(q.field("userId"), args.ownerId))
+            .filter((q) => q.eq(q.field("role"), "owner"))
+            .unique();
+
+        if (!ifUserIsOwner) {
+            throw new Error("You are not authorized to remove this user");
+        }
+
+
+        const deleteUser = await ctx.db.delete(
+            args.accessId as Id<"users_projects">,
+        );
+
+        return deleteUser;
+    }
+})
