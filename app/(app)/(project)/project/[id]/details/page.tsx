@@ -1,6 +1,7 @@
 "use client";
 
 import ProjectDetailForm from "@/components/project-details-form";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 
@@ -17,7 +18,7 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsProps) {
 
     return (
         <main className="container flex max-w-4xl items-center justify-center space-y-6 px-0 py-6">
-            {projectDetails === undefined && <div>loading...</div>}
+            {projectDetails === undefined && <ProjectDetailsPageloading />}
 
             {projectDetails && (
                 <ProjectDetailForm
@@ -37,5 +38,13 @@ export default function ProjectDetailsPage({ params }: ProjectDetailsProps) {
                 />
             )}
         </main>
+    );
+}
+
+export function ProjectDetailsPageloading() {
+    return (
+        <div className="container flex max-w-4xl items-center justify-center space-y-6 px-0 py-6">
+            <Skeleton className="h-96 w-full" />
+        </div>
     );
 }

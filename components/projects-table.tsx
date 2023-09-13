@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { CreateProjectDrawerTrigger } from "./create-project-drawer";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type ProjectTableProps = {
     userId: string;
@@ -22,9 +23,7 @@ export default function ProjectsTable({ userId }: ProjectTableProps) {
         userId,
     });
 
-    console.log(projects);
-
-    if (!projects) return <div>Loading...</div>;
+    if (!projects) return <ProjectTableLoading />;
 
     if (projects.length === 0) return <ProjectEmptyState />;
 
@@ -69,6 +68,15 @@ function ProjectEmptyState() {
                     </Button>
                 </CreateProjectDrawerTrigger>
             </div>
+        </div>
+    );
+}
+
+export function ProjectTableLoading() {
+    return (
+        <div className="flex flex-col space-y-4">
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-32 w-full" />
         </div>
     );
 }

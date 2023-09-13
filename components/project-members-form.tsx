@@ -19,8 +19,10 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Loader2Icon } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { UserAccessLoading } from "@/app/(app)/(project)/project/[id]/collaborators/page";
 
 type ProjectMembersFormProps = {
     projectId: string;
@@ -54,7 +56,8 @@ export default function ProjectMembersForm({
                 <div className="space-y-4">
                     <h4 className="text-sm font-medium">People with access</h4>
                     <div className="grid gap-6">
-                        {users === undefined && <div>loading...</div>}
+                        {users === undefined && <UserAccessLoading />}
+
                         {users &&
                             users.map((access) => (
                                 <ProjectUsers

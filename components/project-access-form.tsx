@@ -17,6 +17,7 @@ import { generateProjectShareLink } from "@/lib/utils";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
+import { UserAccessLoading } from "@/app/(app)/(project)/project/[id]/collaborators/page";
 
 type ProjectAccessFormProps = {
     projectId: string;
@@ -83,7 +84,7 @@ export default function ProjectAccessForm({
                 <Separator className="my-4" />
                 <div className="space-y-4">
                     <h4 className="text-sm font-medium">Requests to join</h4>
-                    {getRequestQuery === undefined && <div>Loading...</div>}
+                    {getRequestQuery === undefined && <UserAccessLoading />}
                     {getRequestQuery && getRequestQuery.length > 0 && (
                         <div className="grid gap-6">
                             {getRequestQuery.map((request) => (
