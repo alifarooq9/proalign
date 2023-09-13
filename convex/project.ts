@@ -272,11 +272,28 @@ export const removeUserFromProject = mutation({
             throw new Error("You are not authorized to remove this user");
         }
 
-
         const deleteUser = await ctx.db.delete(
             args.accessId as Id<"users_projects">,
         );
 
         return deleteUser;
-    }
-})
+    },
+});
+
+export const checkIfUserIsOwner = query({
+    args: { userId: v.string(), projectId: v.string() },
+    handler: async (ctx, args) => {
+        const ifUserIsOwner = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .filter((q) => q.eq(q.field("role"), "owner"))
+            .unique();
+
+        if (!ifUserIsOwner) {
+            return false;
+        }
+
+        return true;
+    },
+});

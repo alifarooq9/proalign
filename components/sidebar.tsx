@@ -28,16 +28,19 @@ const projectSettings = [
         name: "Project Details",
         icon: SettingsIcon,
         url: urls.app.projectDetails,
+        whoCanAccess: "owcollaboratorner",
     },
     {
         name: "Collaborators",
         icon: Users2Icon,
         url: urls.app.projectCollaborators,
+        whoCanAccess: "owner",
     },
     {
         name: "Danger Zone",
         icon: AlertTriangleIcon,
         url: urls.app.projectDangerZone,
+        whoCanAccess: "owner",
     },
 ];
 
@@ -74,29 +77,37 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
                 </div>
 
                 <nav>
-                    {isTheOwner && (
-                        <div className="mt-4 space-y-2">
-                            <h4 className="font-semibold text-muted-foreground">
-                                Project Settings
-                            </h4>
+                    <div className="mt-4 space-y-2">
+                        <h4 className="font-semibold text-muted-foreground">
+                            Project Settings
+                        </h4>
 
-                            {projectSettings.map((setting) => (
+                        {projectSettings.map((settingBtn) => {
+                            if (
+                                settingBtn.whoCanAccess === "owner" &&
+                                !isTheOwner
+                            )
+                                return null;
+
+                            return (
                                 <Button
-                                    key={setting.name}
+                                    key={settingBtn.name}
                                     variant="outline"
                                     className="flex w-full items-center justify-start px-4"
                                     asChild
                                 >
                                     <Link
-                                        href={setting.url(project.id as string)}
+                                        href={settingBtn.url(
+                                            project.id as string,
+                                        )}
                                     >
-                                        <setting.icon className="mr-1.5 h-4 w-4" />
-                                        <span>{setting.name}</span>
+                                        <settingBtn.icon className="mr-1.5 h-4 w-4" />
+                                        <span>{settingBtn.name}</span>
                                     </Link>
                                 </Button>
-                            ))}
-                        </div>
-                    )}
+                            );
+                        })}
+                    </div>
 
                     <div className="mt-4 space-y-2">
                         <h4 className="font-semibold text-muted-foreground">
