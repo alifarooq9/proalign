@@ -17,7 +17,7 @@ import { generateProjectShareLink } from "@/lib/utils";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
-import { UserAccessLoading } from "@/app/(app)/(project)/project/[id]/collaborators/page";
+import { UserAccessLoading } from "@/components/user-access-skeleton";
 
 type ProjectAccessFormProps = {
     projectId: string;

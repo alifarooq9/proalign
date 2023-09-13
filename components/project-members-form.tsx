@@ -22,7 +22,7 @@ import { Button } from "./ui/button";
 import { Fragment, useState } from "react";
 import { Loader2Icon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { UserAccessLoading } from "@/app/(app)/(project)/project/[id]/collaborators/page";
+import { UserAccessLoading } from "@/components/user-access-skeleton";
 
 type ProjectMembersFormProps = {
     projectId: string;
