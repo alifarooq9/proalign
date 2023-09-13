@@ -3,7 +3,6 @@ import ProjectMembersForm from "@/components/project-members-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { currentUser } from "@clerk/nextjs";
-import { Fragment } from "react";
 
 type CollaboratorsPageProps = {
     params: {
@@ -39,7 +38,7 @@ export default async function CollaboratorsPage({
 
 export function UserAccessLoading() {
     return (
-        <Fragment>
+        <div className="grid gap-6">
             <div className="flex h-12 w-full flex-col items-start justify-center space-x-0 space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-x-4 sm:space-y-0">
                 <Skeleton className="h-full w-full max-w-[20rem]" />
                 <div className="flex h-full w-full flex-row items-center justify-start gap-2 sm:justify-end">
@@ -61,6 +60,6 @@ export function UserAccessLoading() {
                     <Skeleton className="h-full w-full max-w-[5rem]" />
                 </div>
             </div>
-        </Fragment>
+        </div>
     );
 }
