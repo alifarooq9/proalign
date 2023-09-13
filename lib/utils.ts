@@ -1,3 +1,4 @@
+import { env } from "@/env/client";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -6,7 +7,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function generateProjectShareLink(projectId: string): string {
-    return `${
-        process.env.VERCEL || "http://localhost:3000"
-    }/share/p/${projectId}`;
+    return `${env.NEXT_PUBLIC_VERCEL_URL}/share/p/${projectId}`;
 }
