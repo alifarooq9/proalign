@@ -138,7 +138,9 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
                                 </Button>
 
                                 <AccordionContent>
-                                    <PagesSidebarContent />
+                                    <PagesSidebarContent
+                                        projectId={project.id as string}
+                                    />
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>

@@ -13,5 +13,12 @@ export const urls = {
         projectDetails: (id: string) => `/project/${id}/details`,
         projectCollaborators: (id: string) => `/project/${id}/collaborators`,
         projectDangerZone: (id: string) => `/project/${id}/danger-zone`,
+        projectPage: ({
+            projectId,
+            pageId,
+        }: {
+            projectId: string;
+            pageId: string;
+        }) => `/project/${projectId}/page/${pageId}`,
     },
 };
