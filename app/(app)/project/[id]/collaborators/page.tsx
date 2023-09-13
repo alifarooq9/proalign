@@ -1,6 +1,7 @@
 import ProjectAccessForm from "@/components/project-access-form";
 import ProjectMembersForm from "@/components/project-members-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { currentUser } from "@clerk/nextjs";
 
 type CollaboratorsPageProps = {
     params: {
@@ -8,7 +9,11 @@ type CollaboratorsPageProps = {
     };
 };
 
-export default function CollaboratorsPage({ params }: CollaboratorsPageProps) {
+export default async function CollaboratorsPage({
+    params,
+}: CollaboratorsPageProps) {
+    const user = await currentUser();
+
     return (
         <main className="container flex w-full max-w-4xl items-center justify-center space-y-6 px-0 py-6">
             <Tabs defaultValue="members" className="w-full">
@@ -17,7 +22,10 @@ export default function CollaboratorsPage({ params }: CollaboratorsPageProps) {
                     <TabsTrigger value="access">Access</TabsTrigger>
                 </TabsList>
                 <TabsContent value="members">
-                    <ProjectMembersForm />
+                    <ProjectMembersForm
+                        projectId={params.id}
+                        userId={user?.id as string}
+                    />
                 </TabsContent>
                 <TabsContent value="access">
                     <ProjectAccessForm projectId={params.id} />

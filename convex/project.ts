@@ -201,3 +201,59 @@ export const deleteById = mutation({
         return deleteProject;
     },
 });
+
+export const getProjectUsersAndOwners = query({
+    args: { projectId: v.string() },
+    handler: async (ctx, args) => {
+        const projectUsers = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .collect();
+
+        const projectUsersWithDetails = await Promise.all(
+            projectUsers.map(async (p) => {
+                const user = await ctx.db
+                    .query("users")
+                    .filter((q) => q.eq(q.field("clerkId"), p.userId))
+                    .unique();
+                return { ...p, user };
+            }),
+        );
+
+        return projectUsersWithDetails.flat();
+    },
+});
+
+export const updateRole = mutation({
+    args: {
+        userId: v.string(),
+        accessId: v.string(),
+        role: v.union(
+            v.literal("owner"),
+            v.literal("canView"),
+            v.literal("canEdit"),
+        ),
+        projectId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const ifUserIsOwner = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .filter((q) => q.eq(q.field("role"), "owner"))
+            .unique();
+
+        if (!ifUserIsOwner) {
+            throw new Error("You are not authorized to update this user role");
+        }
+
+        const updateRole = await ctx.db.patch(
+            args.accessId as Id<"users_projects">,
+            {
+                role: args.role,
+            },
+        );
+
+        return updateRole;
+    },
+});

@@ -31,7 +31,6 @@ export default defineSchema({
         projectId: v.id("projects"),
         role: v.union(
             v.literal("owner"),
-            v.literal("admin"),
             v.literal("canEdit"),
             v.literal("canView"),
         ),

@@ -32,7 +32,7 @@ export default async function ShareProjectIdPage({
     );
 
     if (checkIfUserHasAccess) {
-        return redirect(urls.app.projectDetails(params.id));
+        return redirect(urls.app.project(params.id));
     }
 
     const project = await convex.query(api.project.getById, {
