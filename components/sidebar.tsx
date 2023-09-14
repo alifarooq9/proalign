@@ -124,11 +124,14 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
 
                         <Button
                             variant="outline"
-                            size="lg"
                             className="flex w-full items-center justify-start px-4"
                             asChild
                         >
-                            <Link href={urls.app.dashboard}>
+                            <Link
+                                href={urls.app.projectTasks(
+                                    project.id as string,
+                                )}
+                            >
                                 <ListChecksIcon className="mr-1.5 h-4 w-4" />
                                 <span>Tasks</span>
                             </Link>
@@ -140,7 +143,7 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
                             className={"rounded-lg border"}
                         >
                             <AccordionItem
-                                value="tasks"
+                                value="pages"
                                 className="border-none"
                             >
                                 <Button
@@ -148,7 +151,7 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
                                     className="flex w-full items-center justify-start px-4"
                                     asChild
                                 >
-                                    <AccordionTrigger className="justify-between">
+                                    <AccordionTrigger className="justify-between border-border">
                                         <span className="flex place-items-center">
                                             <FilesIcon className="mr-1.5 h-4 w-4" />
                                             <span>Pages</span>

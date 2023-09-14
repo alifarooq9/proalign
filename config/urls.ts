@@ -20,5 +20,6 @@ export const urls = {
             projectId: string;
             pageId: string;
         }) => `/project/${projectId}/page/${pageId}`,
+        projectTasks: (id: string) => `/project/${id}/tasks`,
     },
 };
