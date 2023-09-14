@@ -17,9 +17,15 @@ type EditorProps = {
     };
     projectId: string;
     userId: string;
+    canEdit: boolean;
 };
 
-export default function Editor({ page, projectId, userId }: EditorProps) {
+export default function Editor({
+    page,
+    projectId,
+    userId,
+    canEdit,
+}: EditorProps) {
     const [saving, setSaving] = useState<boolean>(false);
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const ref = useRef<EditorJS>();
@@ -42,13 +48,11 @@ export default function Editor({ page, projectId, userId }: EditorProps) {
                 onReady() {
                     ref.current = editor;
                 },
+
                 data:
                     page.content !== ""
                         ? JSON.parse(page.content)
-                        : {
-                              blocks: [],
-                              time: new Date(),
-                          },
+                        : { blocks: [], time: new Date() },
                 placeholder: "Type your page content here...",
                 inlineToolbar: true,
                 tools: {
@@ -61,12 +65,10 @@ export default function Editor({ page, projectId, userId }: EditorProps) {
                     embed: Embed,
                     checklist: Checklist,
                 },
-                onChange: () => {
-                    debouncedSave();
-                },
+                readOnly: !canEdit,
             });
         }
-    }, []);
+    }, [page.content, canEdit]);
     useEffect(() => {
         if (typeof window !== "undefined") {
             setIsMounted(true);
@@ -89,6 +91,8 @@ export default function Editor({ page, projectId, userId }: EditorProps) {
     const updatePage = useMutation(api.page.update);
 
     const handleSave = async () => {
+        if (!canEdit) return;
+
         setSaving(true);
         const savedData = await ref.current?.saver.save();
         await updatePage({
@@ -101,24 +105,22 @@ export default function Editor({ page, projectId, userId }: EditorProps) {
         setSaving(false);
     };
 
-    const debouncedSave = useDebounce(async () => {
-        handleSave();
-    }, 1000);
-
     return (
         <div className="w-full space-y-2">
-            <div className="flex items-center justify-end">
-                <Button
-                    onClick={handleSave}
-                    disabled={saving}
-                    variant="secondary"
-                >
-                    {saving && (
-                        <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    <span>{saving ? "Saving" : "Save Changes"}</span>
-                </Button>
-            </div>
+            {canEdit && (
+                <div className="flex items-center justify-end">
+                    <Button
+                        onClick={handleSave}
+                        disabled={saving}
+                        variant="secondary"
+                    >
+                        {saving && (
+                            <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        <span>{saving ? "Saving" : "Save Changes"}</span>
+                    </Button>
+                </div>
+            )}
             <TextareaAutosize
                 autoFocus
                 id="title"
@@ -126,6 +128,7 @@ export default function Editor({ page, projectId, userId }: EditorProps) {
                 onChange={(e) => {
                     setTile(e.currentTarget.value);
                 }}
+                disabled={!canEdit}
                 placeholder="Post title"
                 className="w-full resize-none appearance-none overflow-hidden bg-transparent text-3xl font-bold focus:outline-none sm:text-5xl"
             />

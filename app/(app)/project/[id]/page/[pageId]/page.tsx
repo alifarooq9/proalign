@@ -25,6 +25,11 @@ export default function PageIdPage({ params }: PageIdPageProps) {
         projectId: params.id,
     });
 
+    const userProjects = useQuery(api.project.getUsersProjectById, {
+        projectId: params.id,
+        userId: userId as string,
+    });
+
     if (pageDetails === undefined) {
         return <div>Loading...</div>;
     }
@@ -43,6 +48,10 @@ export default function PageIdPage({ params }: PageIdPageProps) {
                 }}
                 projectId={params.id}
                 userId={userId as string}
+                canEdit={
+                    userProjects?.role === "canEdit" ||
+                    userProjects?.role === "owner"
+                }
             />
         </div>
     );

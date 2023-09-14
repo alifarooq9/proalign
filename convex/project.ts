@@ -224,6 +224,19 @@ export const getProjectUsersAndOwners = query({
     },
 });
 
+export const getUsersProjectById = query({
+    args: { userId: v.string(), projectId: v.string() },
+    handler: async (ctx, args) => {
+        const usersProject = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .unique();
+
+        return usersProject;
+    },
+});
+
 export const updateRole = mutation({
     args: {
         userId: v.string(),
