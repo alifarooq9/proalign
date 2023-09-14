@@ -1,13 +1,23 @@
 "use client";
 
 import EditorJS from "@editorjs/editorjs";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { use, useCallback, useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
-import useDebounce from "lodash.debounce";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, MoreVerticalIcon } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { urls } from "@/config/urls";
 
 type EditorProps = {
     page: {
@@ -26,6 +36,7 @@ export default function Editor({
     userId,
     canEdit,
 }: EditorProps) {
+    const router = useRouter();
     const [saving, setSaving] = useState<boolean>(false);
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const ref = useRef<EditorJS>();
@@ -105,10 +116,37 @@ export default function Editor({
         setSaving(false);
     };
 
+    const deletePage = useMutation(api.page.deleteById);
+
+    const handleDelete = async () => {
+        toast.promise(
+            async () => {
+                return await new Promise<void>(async (resolve, reject) => {
+                    try {
+                        await deletePage({
+                            pageId: page._id,
+                            projectId: projectId,
+                            userId: userId,
+                        });
+
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            },
+            {
+                error: "Failed to delete page",
+                loading: "Deleting page...",
+                success: "Page deleted successfully",
+            },
+        );
+    };
+
     return (
         <div className="w-full space-y-2">
             {canEdit && (
-                <div className="flex items-center justify-end">
+                <div className="flex items-center justify-end space-x-2">
                     <Button
                         onClick={handleSave}
                         disabled={saving}
@@ -119,6 +157,21 @@ export default function Editor({
                         )}
                         <span>{saving ? "Saving" : "Save Changes"}</span>
                     </Button>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="secondary" size="icon">
+                                <MoreVerticalIcon className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                                onClick={handleDelete}
+                                className="cursor-pointer text-destructive focus:text-destructive"
+                            >
+                                Delete
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             )}
             <TextareaAutosize

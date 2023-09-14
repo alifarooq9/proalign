@@ -69,3 +69,26 @@ export const update = mutation({
         return updatePage;
     },
 });
+
+export const deleteById = mutation({
+    args: { pageId: v.string(), projectId: v.string(), userId: v.string() },
+    handler: async (ctx, args) => {
+        const ifUserHasAccessToEdit = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .unique();
+
+        if (!ifUserHasAccessToEdit) {
+            throw new Error("User does not have access");
+        }
+
+        if (ifUserHasAccessToEdit.role === "canView") {
+            throw new Error("User does not have access");
+        }
+
+        const deletePage = await ctx.db.delete(args.pageId as Id<"page">);
+
+        return deletePage;
+    },
+});

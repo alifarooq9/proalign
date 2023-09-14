@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ChevronRightIcon, Loader2Icon, PlusCircleIcon } from "lucide-react";
 import { urls } from "@/config/urls";
-
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { useMutation } from "convex/react";
@@ -30,6 +29,12 @@ export function PagesSidebarContent({
     const router = useRouter();
 
     const [loading, setLoading] = useState<boolean>(false);
+
+    const [search, setSearch] = useState<string>("");
+
+    const filteredPages = pages?.filter((page) =>
+        page.title.toLowerCase().includes(search.toLowerCase()),
+    );
 
     const createPageMutation = useMutation(api.page.create);
 
@@ -61,6 +66,8 @@ export function PagesSidebarContent({
             <Input
                 placeholder="Search"
                 className="h-8 rounded-sm p-2 text-sm"
+                value={search}
+                onChange={(e) => setSearch(e.currentTarget.value)}
             />
 
             <div className="custom-scrollbar h-full max-h-[300px] overflow-y-auto rounded-lg border">
@@ -71,14 +78,14 @@ export function PagesSidebarContent({
                         <Skeleton className="h-6 w-full" />
                     </div>
                 )}
-                {pages && pages.length === 0 ? (
+                {filteredPages && filteredPages.length === 0 ? (
                     <p className="p-3 font-semibold capitalize text-muted-foreground">
                         No Pages Found
                     </p>
                 ) : (
                     <ul className="grid p-2">
-                        {pages &&
-                            pages.map((page) => (
+                        {filteredPages &&
+                            filteredPages.map((page) => (
                                 <li
                                     key={page._id}
                                     className="line-clamp-1 text-sm"
