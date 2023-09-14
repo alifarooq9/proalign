@@ -6,8 +6,20 @@ import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
 import useDebounce from "lodash.debounce";
 import { Loader2Icon } from "lucide-react";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-export default function Editor() {
+type EditorProps = {
+    page: {
+        _id: string;
+        content: string;
+        title: string;
+    };
+    projectId: string;
+    userId: string;
+};
+
+export default function Editor({ page, projectId, userId }: EditorProps) {
     const [saving, setSaving] = useState<boolean>(false);
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const ref = useRef<EditorJS>();
@@ -30,7 +42,14 @@ export default function Editor() {
                 onReady() {
                     ref.current = editor;
                 },
-                placeholder: "Type here to write your post...",
+                data:
+                    page.content !== ""
+                        ? JSON.parse(page.content)
+                        : {
+                              blocks: [],
+                              time: new Date(),
+                          },
+                placeholder: "Type your page content here...",
                 inlineToolbar: true,
                 tools: {
                     header: Header,
@@ -65,18 +84,35 @@ export default function Editor() {
         }
     }, [isMounted, initializeEditor]);
 
-    const debouncedSave = useDebounce(async () => {
+    const [title, setTile] = useState<string>(page.title);
+
+    const updatePage = useMutation(api.page.update);
+
+    const handleSave = async () => {
         setSaving(true);
         const savedData = await ref.current?.saver.save();
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log(savedData);
+        await updatePage({
+            content: JSON.stringify(savedData),
+            pageId: page._id,
+            projectId: projectId,
+            title: title,
+            userId: userId,
+        });
         setSaving(false);
-    }, 750);
+    };
+
+    const debouncedSave = useDebounce(async () => {
+        handleSave();
+    }, 1000);
 
     return (
         <div className="w-full space-y-2">
             <div className="flex items-center justify-end">
-                <Button disabled={saving} variant="secondary">
+                <Button
+                    onClick={handleSave}
+                    disabled={saving}
+                    variant="secondary"
+                >
                     {saving && (
                         <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
                     )}
@@ -86,13 +122,16 @@ export default function Editor() {
             <TextareaAutosize
                 autoFocus
                 id="title"
-                defaultValue={"Test"}
+                value={title}
+                onChange={(e) => {
+                    setTile(e.currentTarget.value);
+                }}
                 placeholder="Post title"
                 className="w-full resize-none appearance-none overflow-hidden bg-transparent text-3xl font-bold focus:outline-none sm:text-5xl"
             />
             <div
                 id="editor"
-                className="prose dark:prose-invert dark:prose-neutral min-h-[600px] w-full max-w-5xl rounded-lg border-2 border-dashed bg-background p-2 sm:px-16 sm:py-6"
+                className="prose min-h-[600px] w-full max-w-5xl rounded-lg border-2 border-dashed bg-background p-2 dark:prose-neutral dark:prose-invert sm:px-16 sm:py-6"
             />
         </div>
     );

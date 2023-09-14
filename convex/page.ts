@@ -24,3 +24,48 @@ export const getAll = query({
         return allPages;
     },
 });
+
+export const getById = query({
+    args: { pageId: v.string(), projectId: v.string() },
+    handler: async (ctx, args) => {
+        const pageById = await ctx.db
+            .query("page")
+            .filter((q) => q.eq(q.field("_id"), args.pageId))
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .unique();
+
+        return pageById;
+    },
+});
+
+export const update = mutation({
+    args: {
+        pageId: v.string(),
+        projectId: v.string(),
+        userId: v.string(),
+        content: v.string(),
+        title: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const ifUserHasAccessToEdit = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .unique();
+
+        if (!ifUserHasAccessToEdit) {
+            throw new Error("User does not have access");
+        }
+
+        if (ifUserHasAccessToEdit.role === "canView") {
+            throw new Error("User does not have access");
+        }
+
+        const updatePage = await ctx.db.patch(args.pageId as Id<"page">, {
+            content: args.content,
+            title: args.title,
+        });
+
+        return updatePage;
+    },
+});
