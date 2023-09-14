@@ -14,6 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as page from "../page";
 import type * as project from "../project";
 import type * as user from "../user";
 
@@ -26,6 +27,7 @@ import type * as user from "../user";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  page: typeof page;
   project: typeof project;
   user: typeof user;
 }>;

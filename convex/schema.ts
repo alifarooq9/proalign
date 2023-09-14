@@ -39,4 +39,9 @@ export default defineSchema({
         userId: v.string(),
         projectId: v.id("projects"),
     }).index("project_requests", ["projectId"]),
+    page: defineTable({
+        title: v.string(),
+        content: v.string(),
+        projectId: v.id("projects"),
+    }).index("page", ["projectId"]),
 });

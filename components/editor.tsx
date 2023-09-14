@@ -5,8 +5,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
 import useDebounce from "lodash.debounce";
+import { Loader2Icon } from "lucide-react";
 
 export default function Editor() {
+    const [saving, setSaving] = useState<boolean>(false);
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const ref = useRef<EditorJS>();
 
@@ -40,7 +42,7 @@ export default function Editor() {
                     embed: Embed,
                     checklist: Checklist,
                 },
-                onChange: (editor) => {
+                onChange: () => {
                     debouncedSave();
                 },
             });
@@ -64,14 +66,22 @@ export default function Editor() {
     }, [isMounted, initializeEditor]);
 
     const debouncedSave = useDebounce(async () => {
+        setSaving(true);
         const savedData = await ref.current?.saver.save();
-        console.log(savedData?.blocks);
-    }, 1000);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log(savedData);
+        setSaving(false);
+    }, 750);
 
     return (
         <div className="w-full space-y-2">
             <div className="flex items-center justify-end">
-                <Button variant="secondary">Save Changes</Button>
+                <Button disabled={saving} variant="secondary">
+                    {saving && (
+                        <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    <span>{saving ? "Saving" : "Save Changes"}</span>
+                </Button>
             </div>
             <TextareaAutosize
                 autoFocus

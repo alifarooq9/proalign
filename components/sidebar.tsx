@@ -1,3 +1,5 @@
+"use client";
+
 import { Project } from "@/types/project";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -22,6 +24,8 @@ import {
     PagesSidebarContent,
     WhiteboardsSidebarContent,
 } from "@/components/project-content-siebar";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const projectSettings = [
     {
@@ -51,6 +55,10 @@ type ProjectSideNavProps = {
 
 export default function Sidebar({ project, userId }: ProjectSideNavProps) {
     const isTheOwner = project.owners?.includes(userId);
+
+    const pages = useQuery(api.page.getAll, {
+        projectId: project.id as string,
+    });
 
     return (
         <aside className="sticky left-0 top-20 hidden w-72 rounded-lg border-2 border-dashed bg-background/70 backdrop-blur-[2px] xl:block xl:h-[calc(100vh-6rem)]">
@@ -151,6 +159,7 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
                                 <AccordionContent>
                                     <PagesSidebarContent
                                         projectId={project.id as string}
+                                        pages={pages}
                                     />
                                 </AccordionContent>
                             </AccordionItem>
