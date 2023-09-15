@@ -6,12 +6,13 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { MoreVerticalIcon } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner";
 import { useAuth } from "@clerk/nextjs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import AssignUsersTask from "./assign-users-task";
 
 type TaskProps = {
     task: {
@@ -19,7 +20,15 @@ type TaskProps = {
         title: string;
         description: string;
         column: string;
+        users: {
+            id: string;
+            firstName: string;
+            lastName: string;
+            email: string[];
+            imageUrl: string;
+        }[];
     };
+
     index: number;
     canEdit: boolean;
     projectId: string;
@@ -50,6 +59,31 @@ export default function Task({ task, index, canEdit, projectId }: TaskProps) {
                     <p className="text-sm text-muted-foreground">
                         {task.description}
                     </p>
+                    <div className="mt-2 flex items-center justify-between">
+                        <div className="flex flex-wrap items-start gap-2">
+                            {task.users.map((user) => (
+                                <div
+                                    key={user.id}
+                                    className="flex flex-row items-center space-x-2"
+                                >
+                                    <Avatar className="h-7 w-7">
+                                        <AvatarImage
+                                            src={user?.imageUrl as string}
+                                        />
+                                        <AvatarFallback className="uppercase">
+                                            {user?.firstName?.charAt(0)}
+                                            {user?.lastName?.charAt(0)}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </div>
+                            ))}
+                        </div>
+                        <AssignUsersTask
+                            projectId={projectId}
+                            taskId={task.id}
+                            taskUsers={task.users}
+                        />
+                    </div>
                 </div>
             )}
         </Draggable>

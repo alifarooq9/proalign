@@ -55,5 +55,6 @@ export default defineSchema({
             v.literal("5"),
         ),
         projectId: v.id("projects"),
+        users: v.array(v.string()),
     }).index("task", ["projectId"]),
 });

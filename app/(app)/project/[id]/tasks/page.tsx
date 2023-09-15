@@ -143,6 +143,22 @@ export default function TasksPage({ params }: TasksPageProps) {
                                                                 task.description,
                                                             id: task._id,
                                                             title: task.title,
+                                                            users: task.users
+                                                                ? task.users.map(
+                                                                      (
+                                                                          user,
+                                                                      ) => ({
+                                                                          email: user?.email as string[],
+                                                                          firstName:
+                                                                              user?.firstName as string,
+                                                                          id: user?.clerkId as string,
+                                                                          imageUrl:
+                                                                              user?.imageUrl as string,
+                                                                          lastName:
+                                                                              user?.lastName as string,
+                                                                      }),
+                                                                  )
+                                                                : [],
                                                         }}
                                                         key={index}
                                                         canEdit={
