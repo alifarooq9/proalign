@@ -40,25 +40,18 @@ export default function TasksPage({ params }: TasksPageProps) {
         },
     ] as const;
 
-    const tasks = [
-        {
-            id: "task1",
-            title: "Task 1",
-            description: "This is task 1",
-            column: "1",
-        },
-        {
-            id: "task2",
-            title: "Task 2",
-            description: "This is task 2",
-            column: "1",
-        },
-    ];
+    const tasks = useQuery(api.task.getAll, {
+        projectId: params.id,
+    });
 
     const checkIfUserCanEdit = useQuery(api.project.getUsersProjectById, {
         projectId: params.id,
         userId: userId as string,
     });
+
+    if (tasks === undefined) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <main className="w-full">
@@ -80,7 +73,7 @@ export default function TasksPage({ params }: TasksPageProps) {
                             <Droppable droppableId={column.id} type="task">
                                 {(provided, snapshot) => {
                                     const filteredTasks = tasks.filter(
-                                        (task) => task.column === column.id,
+                                        (task) => task.status === column.id,
                                     );
 
                                     return (
@@ -97,7 +90,13 @@ export default function TasksPage({ params }: TasksPageProps) {
                                                 (task, index) => (
                                                     <Task
                                                         index={index}
-                                                        task={task}
+                                                        task={{
+                                                            column: task.status,
+                                                            description:
+                                                                task.description,
+                                                            id: task._id,
+                                                            title: task.title,
+                                                        }}
                                                         key={index}
                                                         canEdit={
                                                             checkIfUserCanEdit?.role !==

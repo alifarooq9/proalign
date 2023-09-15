@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { Id } from "./_generated/dataModel";
 
 export const create = mutation({
@@ -39,5 +39,19 @@ export const create = mutation({
         });
 
         return createTask;
+    },
+});
+
+export const getAll = query({
+    args: {
+        projectId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const tasks = await ctx.db
+            .query("task")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .collect();
+
+        return tasks;
     },
 });
