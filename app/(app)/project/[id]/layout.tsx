@@ -13,6 +13,22 @@ type ProjectIdLayoutProps = {
     };
 };
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+    const project = await convex.query(api.project.getById, {
+        id: params.id,
+    });
+
+    if (!project) {
+        return {
+            title: "Project not found",
+        };
+    }
+
+    return {
+        title: project.name + " | Request Access",
+    };
+}
+
 export default async function ProjectIdLayout({
     children,
     params,

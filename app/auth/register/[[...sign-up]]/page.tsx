@@ -1,5 +1,14 @@
 import { SignUp } from "@clerk/nextjs";
 import { urls } from "@/config/urls";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: {
+        absolute: "Register | PRO ALIGN",
+    },
+    description:
+        "Register to PRO ALIGN, your all-in-one solution for efficient task management. Create, organize, and share tasks, and pages with your team effortlessly.",
+};
 
 export default function RegisterPage() {
     return (

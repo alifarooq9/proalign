@@ -7,6 +7,11 @@ import ProjectsTable from "@/components/projects-table";
 import { Button } from "@/components/ui/button";
 import { currentUser } from "@clerk/nextjs";
 import { PlusCircleIcon } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Dashboard",
+};
 
 export default async function DashboardPage() {
     const user = await currentUser();

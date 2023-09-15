@@ -2,21 +2,15 @@ export const siteFeatures = [
     {
         title: "Collaboration",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique",
+            'You can collaborate with your team members by sharing your "Project" with them.',
     },
     {
         title: "Task Management",
         description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique",
-    },
-    {
-        title: "Whiteboard",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique",
+            'You can create "Tasks" and assign them to your team members.',
     },
     {
         title: "Notion like Pages",
-        description:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique",
+        description: "You can create pages and add content to them.",
     },
 ];

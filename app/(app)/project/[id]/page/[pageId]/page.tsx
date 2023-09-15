@@ -2,6 +2,7 @@
 
 import { urls } from "@/config/urls";
 import { api } from "@/convex/_generated/api";
+import { convex } from "@/lib/convex";
 import { useAuth } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { Loader2Icon } from "lucide-react";

@@ -8,6 +8,22 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Fragment } from "react";
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+    const project = await convex.query(api.project.getById, {
+        id: params.id,
+    });
+
+    if (!project) {
+        return {
+            title: "Project not found",
+        };
+    }
+
+    return {
+        title: project.name + " | Request Access",
+    };
+}
+
 type ShareProjectIdProps = {
     params: {
         id: string;

@@ -1,5 +1,14 @@
 import { urls } from "@/config/urls";
 import { SignIn } from "@clerk/nextjs";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: {
+        absolute: "Login | PRO ALIGN",
+    },
+    description:
+        "Login to PRO ALIGN, your all-in-one solution for efficient task management. Create, organize, and share tasks, and pages with your team effortlessly.",
+};
 
 export default function LoginPage() {
     return (

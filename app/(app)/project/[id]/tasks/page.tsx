@@ -2,6 +2,7 @@
 
 import CreateTaskForm from "@/components/create-task-form";
 import Task from "@/components/task";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
@@ -92,7 +93,15 @@ export default function TasksPage({ params }: TasksPageProps) {
     };
 
     if (tasks === undefined) {
-        return <div>Loading...</div>;
+        return (
+            <div className="flex w-full flex-wrap gap-3">
+                <Skeleton className="h-48 w-full sm:w-72" />
+                <Skeleton className="h-48 w-full sm:w-72" />
+                <Skeleton className="h-48 w-full sm:w-72" />
+                <Skeleton className="h-48 w-full sm:w-72" />
+                <Skeleton className="h-48 w-full sm:w-72" />
+            </div>
+        );
     }
 
     return (

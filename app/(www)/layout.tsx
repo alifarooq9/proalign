@@ -8,7 +8,6 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { urls } from "@/config/urls";
 import { Button } from "@/components/ui/button";
@@ -60,24 +59,6 @@ function LinksElement() {
                             </ul>
                         </NavigationMenuLink>
                     </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href={urls.www.pricing} legacyBehavior passHref>
-                        <NavigationMenuLink
-                            className={navigationMenuTriggerStyle}
-                        >
-                            Pricing
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href={urls.www.support} legacyBehavior passHref>
-                        <NavigationMenuLink
-                            className={navigationMenuTriggerStyle}
-                        >
-                            Support
-                        </NavigationMenuLink>
-                    </Link>
                 </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
