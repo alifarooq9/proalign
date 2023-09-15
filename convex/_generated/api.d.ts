@@ -16,6 +16,7 @@ import type {
 } from "convex/server";
 import type * as page from "../page";
 import type * as project from "../project";
+import type * as task from "../task";
 import type * as user from "../user";
 
 /**
@@ -29,6 +30,7 @@ import type * as user from "../user";
 declare const fullApi: ApiFromModules<{
   page: typeof page;
   project: typeof project;
+  task: typeof task;
   user: typeof user;
 }>;
 export declare const api: FilterApi<

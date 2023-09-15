@@ -20,11 +20,13 @@ type ProjectContentSidebarProps = {
               title: string;
           }[]
         | undefined;
+    canEdit: boolean;
 };
 
 export function PagesSidebarContent({
     projectId,
     pages,
+    canEdit,
 }: ProjectContentSidebarProps) {
     const router = useRouter();
 
@@ -116,7 +118,7 @@ export function PagesSidebarContent({
 
             <div className="flex place-content-between place-items-center space-x-1">
                 <Button
-                    disabled={loading}
+                    disabled={loading || !canEdit}
                     onClick={handleCreatePage}
                     variant="secondary"
                     size="sm"

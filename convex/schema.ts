@@ -44,4 +44,16 @@ export default defineSchema({
         content: v.string(),
         projectId: v.id("projects"),
     }).index("page", ["projectId"]),
+    task: defineTable({
+        title: v.string(),
+        description: v.string(),
+        status: v.union(
+            v.literal("1"),
+            v.literal("2"),
+            v.literal("3"),
+            v.literal("4"),
+            v.literal("5"),
+        ),
+        projectId: v.id("projects"),
+    }).index("task", ["projectId"]),
 });

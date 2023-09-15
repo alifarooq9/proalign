@@ -60,6 +60,11 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
         projectId: project.id as string,
     });
 
+    const canUserEdit = useQuery(api.project.getUsersProjectById, {
+        projectId: project.id as string,
+        userId,
+    });
+
     return (
         <aside className="sticky left-0 top-20 hidden w-72 rounded-lg border-2 border-dashed bg-background/70 backdrop-blur-[2px] xl:block xl:h-[calc(100vh-6rem)]">
             <ScrollArea className="h-full w-full rounded-lg p-4">
@@ -163,6 +168,9 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
                                     <PagesSidebarContent
                                         projectId={project.id as string}
                                         pages={pages}
+                                        canEdit={
+                                            canUserEdit?.role !== "canView"
+                                        }
                                     />
                                 </AccordionContent>
                             </AccordionItem>

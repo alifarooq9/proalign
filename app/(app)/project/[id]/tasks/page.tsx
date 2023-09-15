@@ -2,10 +2,21 @@
 
 import CreateTaskForm from "@/components/create-task-form";
 import Task from "@/components/task";
+import { api } from "@/convex/_generated/api";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-export default function TasksPage() {
+type TasksPageProps = {
+    params: {
+        id: string;
+    };
+};
+
+export default function TasksPage({ params }: TasksPageProps) {
+    const { userId } = useAuth();
+
     const columns = [
         {
             id: "1",
@@ -19,7 +30,15 @@ export default function TasksPage() {
             id: "3",
             title: "Done",
         },
-    ];
+        {
+            id: "4",
+            title: "On Hold",
+        },
+        {
+            id: "5",
+            title: "Cancel",
+        },
+    ] as const;
 
     const tasks = [
         {
@@ -36,6 +55,11 @@ export default function TasksPage() {
         },
     ];
 
+    const checkIfUserCanEdit = useQuery(api.project.getUsersProjectById, {
+        projectId: params.id,
+        userId: userId as string,
+    });
+
     return (
         <main className="w-full">
             <DragDropContext
@@ -43,102 +67,61 @@ export default function TasksPage() {
                     console.log("drag end", data);
                 }}
             >
-                <Droppable
-                    droppableId="todos"
-                    type="column"
-                    direction="horizontal"
-                >
-                    {(provided, snapshot) => (
+                <div className="flex w-full flex-wrap gap-3">
+                    {columns.map((column) => (
                         <div
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                            className={cn("flex w-full flex-wrap gap-4")}
+                            key={column.id}
+                            className={cn(
+                                "h-fit w-full rounded-lg border-2 border-dashed bg-background p-3 sm:w-72",
+                            )}
                         >
-                            {columns.map((column, index) => (
-                                <Draggable
-                                    key={column.id}
-                                    draggableId={column.id}
-                                    index={index}
-                                >
-                                    {(provided) => (
+                            <h2 className="font-semibold">{column.title}</h2>
+
+                            <Droppable droppableId={column.id} type="task">
+                                {(provided, snapshot) => {
+                                    const filteredTasks = tasks.filter(
+                                        (task) => task.column === column.id,
+                                    );
+
+                                    return (
                                         <div
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
+                                            {...provided.droppableProps}
                                             ref={provided.innerRef}
                                             className={cn(
-                                                "h-fit w-72 rounded-lg border-2 border-dashed bg-background p-3",
+                                                "mt-4 w-full space-y-3 rounded-lg",
+                                                snapshot.isDraggingOver &&
+                                                    "bg-secondary",
                                             )}
                                         >
-                                            <h2 className="font-semibold">
-                                                {column.title}
-                                            </h2>
+                                            {filteredTasks.map(
+                                                (task, index) => (
+                                                    <Task
+                                                        index={index}
+                                                        task={task}
+                                                        key={index}
+                                                        canEdit={
+                                                            checkIfUserCanEdit?.role !==
+                                                            "canView"
+                                                        }
+                                                    />
+                                                ),
+                                            )}
 
-                                            <Droppable
-                                                droppableId={column.id}
-                                                type="task"
-                                            >
-                                                {(provided, snapshot) => {
-                                                    const filteredTasks =
-                                                        tasks.filter(
-                                                            (task) =>
-                                                                task.column ===
-                                                                column.id,
-                                                        );
+                                            {provided.placeholder}
 
-                                                    return (
-                                                        <div
-                                                            {...provided.droppableProps}
-                                                            ref={
-                                                                provided.innerRef
-                                                            }
-                                                            className={cn(
-                                                                "mt-4 w-full space-y-3 rounded-lg",
-                                                                snapshot.isDraggingOver &&
-                                                                    "bg-secondary",
-                                                            )}
-                                                        >
-                                                            {filteredTasks.map(
-                                                                (
-                                                                    task,
-                                                                    index,
-                                                                ) => (
-                                                                    <Task
-                                                                        index={
-                                                                            index
-                                                                        }
-                                                                        task={
-                                                                            task
-                                                                        }
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                    />
-                                                                ),
-                                                            )}
-
-                                                            {
-                                                                provided.placeholder
-                                                            }
-
-                                                            <CreateTaskForm
-                                                                columnId={
-                                                                    column.id
-                                                                }
-                                                                columns={
-                                                                    columns
-                                                                }
-                                                            />
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Droppable>
+                                            <CreateTaskForm
+                                                columnId={column.id}
+                                                columns={columns as any}
+                                                projectId={params.id}
+                                                userId={userId as string}
+                                            />
                                         </div>
-                                    )}
-                                </Draggable>
-                            ))}
+                                    );
+                                }}
+                            </Droppable>
                         </div>
-                    )}
-                </Droppable>
+                    ))}
+                </div>
             </DragDropContext>
         </main>
     );

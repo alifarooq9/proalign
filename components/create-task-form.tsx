@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusCircleIcon } from "lucide-react";
+import { Loader2Icon, PlusCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -30,12 +30,11 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "./ui/select";
-
-type CreateTaskFormProps = {
-    columns: { id: string; title: string }[];
-    columnId: string;
-};
+} from "@/components/ui/select";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const CreateTaskSchema = z.object({
     title: z
@@ -50,9 +49,18 @@ const CreateTaskSchema = z.object({
 
 type CreateTaskSchema = z.infer<typeof CreateTaskSchema>;
 
+type CreateTaskFormProps = {
+    columns: { id: string; title: string }[];
+    columnId: "1" | "2" | "3" | "4" | "5";
+    projectId: string;
+    userId: string;
+};
+
 export default function CreateTaskForm({
     columnId,
     columns,
+    projectId,
+    userId,
 }: CreateTaskFormProps) {
     const form = useForm<CreateTaskSchema>({
         resolver: zodResolver(CreateTaskSchema as any),
@@ -63,23 +71,59 @@ export default function CreateTaskForm({
         },
     });
 
+    const createTaskMutation = useMutation(api.task.create);
+
+    const [open, setOpen] = useState<boolean>(false);
+
+    const [loading, setLoading] = useState<boolean>(false);
+
     const onSubmit = async (values: CreateTaskSchema) => {
         console.log(values);
+
+        setLoading(true);
+        const taskId = await createTaskMutation({
+            description: values.description,
+            title: values.title,
+            projectId,
+            userId,
+            status: columnId,
+        })
+            .then((res) => {
+                toast.success("Task created successfully");
+                setOpen(false);
+                return res;
+            })
+            .catch(() => {
+                toast.error("Task creation failed");
+                return null;
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+
+        if (taskId) {
+            form.reset();
+        }
     };
 
     return (
         <div className="flex w-full justify-end p-2">
-            <Dialog>
+            <Dialog
+                open={open}
+                onOpenChange={(value) => {
+                    setOpen(value);
+                }}
+            >
                 <DialogTrigger asChild>
                     <Button size="icon">
                         <PlusCircleIcon className="h-5 w-5" />
                     </Button>
                 </DialogTrigger>
-                <DialogContent>
+
+                <DialogContent className="space-y-3">
                     <DialogHeader>
                         <DialogTitle>Create a Task</DialogTitle>
                     </DialogHeader>
-
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
@@ -159,14 +203,19 @@ export default function CreateTaskForm({
                                     </FormItem>
                                 )}
                             />
+
+                            <DialogFooter>
+                                <Button type="submit" disabled={loading}>
+                                    {loading ? (
+                                        <Loader2Icon className="mr-1.5 h-4 w-4 animate-spin" />
+                                    ) : (
+                                        <PlusCircleIcon className="mr-1.5 h-4 w-4" />
+                                    )}
+                                    <span>Create</span>
+                                </Button>
+                            </DialogFooter>
                         </form>
                     </Form>
-                    <DialogFooter>
-                        <Button>
-                            <PlusCircleIcon className="mr-1.5 h-4 w-4" />
-                            <span>Create</span>
-                        </Button>
-                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </div>

@@ -9,11 +9,17 @@ type TaskProps = {
         column: string;
     };
     index: number;
+    canEdit: boolean;
 };
 
-export default function Task({ task, index }: TaskProps) {
+export default function Task({ task, index, canEdit }: TaskProps) {
     return (
-        <Draggable key={task.id} draggableId={task.id} index={index}>
+        <Draggable
+            isDragDisabled={!canEdit}
+            key={task.id}
+            draggableId={task.id}
+            index={index}
+        >
             {(provided, snapshot) => (
                 <div
                     {...provided.draggableProps}
