@@ -55,3 +55,40 @@ export const getAll = query({
         return tasks;
     },
 });
+
+export const updateStatus = mutation({
+    args: {
+        id: v.string(),
+        status: v.union(
+            v.literal("1"),
+            v.literal("2"),
+            v.literal("3"),
+            v.literal("4"),
+            v.literal("5"),
+        ),
+        projectId: v.string(),
+        userId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const checkIfUserHasAccess = await ctx.db
+            .query("users_projects")
+            .filter((q) => q.eq(q.field("projectId"), args.projectId))
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .unique();
+
+        if (!checkIfUserHasAccess) {
+            throw new Error("User does not have access");
+        }
+
+        if (checkIfUserHasAccess.role === "canView") {
+            throw new Error("User does not have access");
+        }
+
+        const updateTask = await ctx.db
+            .patch(args.id as Id<"task">, {
+                status: args.status,
+            })
+
+        return updateTask;
+    },
+});

@@ -5,8 +5,13 @@ import Task from "@/components/task";
 import { api } from "@/convex/_generated/api";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useMutation, useQuery } from "convex/react";
+import {
+    DragDropContext,
+    Droppable,
+    Draggable,
+    DropResult,
+} from "react-beautiful-dnd";
 
 type TasksPageProps = {
     params: {
@@ -49,17 +54,55 @@ export default function TasksPage({ params }: TasksPageProps) {
         userId: userId as string,
     });
 
+    const updateStatusMutation = useMutation(api.task.updateStatus);
+
+    const handleTaskUpdate = async (result: DropResult) => {
+        const { destination, source, draggableId } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        if (!tasks) {
+            return;
+        }
+
+        const task = tasks.find((task) => task._id === draggableId);
+
+        if (!task) {
+            return;
+        }
+
+        const newStatus = columns.find(
+            (column) => column.id === destination.droppableId,
+        );
+
+        if (!newStatus) {
+            return;
+        }
+
+        await updateStatusMutation({
+            status: newStatus.id,
+            id: task._id,
+            projectId: params.id,
+            userId: userId as string,
+        });
+    };
+
     if (tasks === undefined) {
         return <div>Loading...</div>;
     }
 
     return (
         <main className="w-full">
-            <DragDropContext
-                onDragEnd={(data) => {
-                    console.log("drag end", data);
-                }}
-            >
+            <DragDropContext onDragEnd={handleTaskUpdate}>
                 <div className="flex w-full flex-wrap gap-3">
                     {columns.map((column) => (
                         <div
