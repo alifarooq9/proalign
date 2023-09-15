@@ -10,7 +10,6 @@ import {
     ChevronLeftIcon,
     FilesIcon,
     ListChecksIcon,
-    PresentationIcon,
     SettingsIcon,
     Users2Icon,
 } from "lucide-react";
@@ -20,10 +19,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-import {
-    PagesSidebarContent,
-    WhiteboardsSidebarContent,
-} from "@/components/project-content-siebar";
+import { PagesSidebarContent } from "@/components/project-content-siebar";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
@@ -172,34 +168,6 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
                                             canUserEdit?.role !== "canView"
                                         }
                                     />
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
-
-                        <Accordion
-                            type="single"
-                            collapsible
-                            className={"rounded-lg border"}
-                        >
-                            <AccordionItem
-                                value="whiteboards"
-                                className="border-none"
-                            >
-                                <Button
-                                    variant="ghost"
-                                    className="flex w-full items-center justify-start px-4"
-                                    asChild
-                                >
-                                    <AccordionTrigger className="justify-between">
-                                        <span className="flex place-items-center">
-                                            <PresentationIcon className="mr-1.5 h-4 w-4" />
-                                            <span>Whiteboards</span>
-                                        </span>
-                                    </AccordionTrigger>
-                                </Button>
-
-                                <AccordionContent>
-                                    <WhiteboardsSidebarContent />
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>

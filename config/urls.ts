@@ -21,5 +21,12 @@ export const urls = {
             pageId: string;
         }) => `/project/${projectId}/page/${pageId}`,
         projectTasks: (id: string) => `/project/${id}/tasks`,
+        projectWhiteboard: ({
+            projectId,
+            whiteboardId,
+        }: {
+            projectId: string;
+            whiteboardId: string;
+        }) => `/project/${projectId}/whiteboard/${whiteboardId}`,
     },
 };

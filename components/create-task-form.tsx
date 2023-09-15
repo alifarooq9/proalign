@@ -78,8 +78,6 @@ export default function CreateTaskForm({
     const [loading, setLoading] = useState<boolean>(false);
 
     const onSubmit = async (values: CreateTaskSchema) => {
-        console.log(values);
-
         setLoading(true);
         const taskId = await createTaskMutation({
             description: values.description,
