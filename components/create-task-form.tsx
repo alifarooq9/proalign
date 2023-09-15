@@ -86,7 +86,7 @@ export default function CreateTaskForm({
             title: values.title,
             projectId,
             userId,
-            status: columnId,
+            status: values.columnId as any,
         })
             .then((res) => {
                 toast.success("Task created successfully");

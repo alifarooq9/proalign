@@ -6,12 +6,7 @@ import { api } from "@/convex/_generated/api";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
-import {
-    DragDropContext,
-    Droppable,
-    Draggable,
-    DropResult,
-} from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 
 type TasksPageProps = {
     params: {
@@ -145,6 +140,7 @@ export default function TasksPage({ params }: TasksPageProps) {
                                                             checkIfUserCanEdit?.role !==
                                                             "canView"
                                                         }
+                                                        projectId={params.id}
                                                     />
                                                 ),
                                             )}

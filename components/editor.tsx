@@ -1,7 +1,7 @@
 "use client";
 
 import EditorJS from "@editorjs/editorjs";
-import { use, useCallback, useEffect, useRef, useState } from "react";
+import {  useCallback, useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
 import { Loader2Icon, MoreVerticalIcon } from "lucide-react";
@@ -11,13 +11,11 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { urls } from "@/config/urls";
+
 
 type EditorProps = {
     page: {
