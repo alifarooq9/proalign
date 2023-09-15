@@ -28,7 +28,7 @@ export default async function CollaboratorsPage({
     );
 
     if (!checkIfUserIsOwner) {
-        return redirect(urls.app.project(params.id));
+        return redirect(urls.app.projectDetails(params.id));
     }
 
     return (

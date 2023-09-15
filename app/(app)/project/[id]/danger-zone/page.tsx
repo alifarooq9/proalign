@@ -25,7 +25,7 @@ export default async function ProjectDangerZonePage({
     );
 
     if (!checkIfUserIsOwner) {
-        return redirect(urls.app.project(params.id));
+        return redirect(urls.app.projectDetails(params.id));
     }
 
     return (

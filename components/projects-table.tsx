@@ -28,7 +28,7 @@ export default function ProjectsTable({ userId }: ProjectTableProps) {
     if (projects.length === 0) return <ProjectEmptyState />;
 
     function onClickRow(projectID: string) {
-        router.push(urls.app.project(projectID));
+        router.push(urls.app.projectDetails(projectID));
     }
 
     const projectsData: Project[] = projects.map((project) => ({

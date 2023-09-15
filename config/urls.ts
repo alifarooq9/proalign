@@ -9,7 +9,6 @@ export const urls = {
     },
     app: {
         dashboard: "/dashboard",
-        project: (id: string) => `/project/${id}`,
         projectDetails: (id: string) => `/project/${id}/details`,
         projectCollaborators: (id: string) => `/project/${id}/collaborators`,
         projectDangerZone: (id: string) => `/project/${id}/danger-zone`,

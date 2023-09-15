@@ -39,7 +39,7 @@ export default function PageIdPage({ params }: PageIdPageProps) {
     }
 
     if (!pageDetails) {
-        return router.push(urls.app.project(params.id));
+        return router.push(urls.app.projectDetails(params.id));
     }
 
     return (
