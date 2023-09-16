@@ -11,6 +11,7 @@ export const metadata: Metadata = {
         default: "PRO ALIGN | Work on your project ideas with your team",
         template: "%s | PRO ALIGN",
     },
+    manifest: "/manifest.json",
     description:
         "Welcome to PRO ALIGN, your all-in-one solution for efficient task management. Create, organize, and share tasks, and pages with your team effortlessly.",
 };
