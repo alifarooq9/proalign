@@ -22,6 +22,7 @@ import {
 import { PagesSidebarContent } from "@/components/project-content-siebar";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Fragment, ReactNode } from "react";
 
 const projectSettings = [
     {
@@ -47,9 +48,14 @@ const projectSettings = [
 type ProjectSideNavProps = {
     project: Project;
     userId: string;
+    sticky: boolean;
 };
 
-export default function Sidebar({ project, userId }: ProjectSideNavProps) {
+export default function Sidebar({
+    project,
+    userId,
+    sticky,
+}: ProjectSideNavProps) {
     const isTheOwner = project.owners?.includes(userId);
 
     const pages = useQuery(api.page.getAll, {
@@ -62,7 +68,7 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
     });
 
     return (
-        <aside className="sticky left-0 top-20 hidden w-72 rounded-lg border-2 border-dashed bg-background/70 backdrop-blur-[2px] xl:block xl:h-[calc(100vh-6rem)]">
+        <StickySideBar withSticky={sticky}>
             <ScrollArea className="h-full w-full rounded-lg p-4">
                 <Button
                     variant="secondary"
@@ -174,6 +180,23 @@ export default function Sidebar({ project, userId }: ProjectSideNavProps) {
                     </div>
                 </nav>
             </ScrollArea>
-        </aside>
+        </StickySideBar>
     );
+}
+
+type StickyProps = {
+    children: ReactNode;
+    withSticky: boolean;
+};
+
+function StickySideBar({ children, withSticky }: StickyProps) {
+    if (withSticky) {
+        return (
+            <aside className="sticky left-0 top-20 hidden w-72 rounded-lg border-2 border-dashed bg-background/70 backdrop-blur-[2px] xl:block xl:h-[calc(100vh-6rem)]">
+                {children}
+            </aside>
+        );
+    }
+
+    return <Fragment>{children}</Fragment>;
 }

@@ -5,6 +5,12 @@ import { convex } from "@/lib/convex";
 import { currentUser } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
 import { ReactNode } from "react";
+import Header from "@/components/header";
+import { Skeleton } from "@/components/ui/skeleton";
+import { UserButton } from "@clerk/nextjs";
+import { ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
+import { Fragment } from "react";
+import SheetMenu from "@/components/sheet-menu";
 
 type ProjectIdLayoutProps = {
     children: ReactNode;
@@ -60,24 +66,61 @@ export default async function ProjectIdLayout({
     }
 
     return (
-        <div className="flex gap-5 px-4 sm:px-3">
-            <Sidebar
-                project={{
-                    name: projectDetails.name,
-                    description: projectDetails.description,
-                    expectedCompletionDate:
-                        projectDetails.expectedCompletionDate,
-                    id: projectDetails._id,
-                    priority: projectDetails.priority,
-                    status: projectDetails.status,
-                    _creationTime:
-                        projectDetails._creationTime.toLocaleString(),
-                    owners: projectDetails.owners,
-                    badge: projectDetails.badge,
-                }}
-                userId={user.id as string}
+        <Fragment>
+            <Header
+                AuthElement={AuthElement}
+                SheetMenu={
+                    <SheetMenu
+                        project={{
+                            name: projectDetails.name,
+                            description: projectDetails.description,
+                            expectedCompletionDate:
+                                projectDetails.expectedCompletionDate,
+                            id: projectDetails._id,
+                            priority: projectDetails.priority,
+                            status: projectDetails.status,
+                            _creationTime:
+                                projectDetails._creationTime.toLocaleString(),
+                            owners: projectDetails.owners,
+                            badge: projectDetails.badge,
+                        }}
+                        userId={user.id as string}
+                    />
+                }
             />
-            <div className="flex-1">{children}</div>
-        </div>
+            <div className="flex gap-5 px-4 sm:px-3">
+                <Sidebar
+                    project={{
+                        name: projectDetails.name,
+                        description: projectDetails.description,
+                        expectedCompletionDate:
+                            projectDetails.expectedCompletionDate,
+                        id: projectDetails._id,
+                        priority: projectDetails.priority,
+                        status: projectDetails.status,
+                        _creationTime:
+                            projectDetails._creationTime.toLocaleString(),
+                        owners: projectDetails.owners,
+                        badge: projectDetails.badge,
+                    }}
+                    userId={user.id as string}
+                    sticky={true}
+                />
+                <div className="flex-1">{children}</div>
+            </div>
+        </Fragment>
+    );
+}
+
+function AuthElement() {
+    return (
+        <Fragment>
+            <ClerkLoading>
+                <Skeleton className="aspect-square w-10 rounded-full" />
+            </ClerkLoading>
+            <ClerkLoaded>
+                <UserButton afterSignOutUrl={urls.auth.login} />
+            </ClerkLoaded>
+        </Fragment>
     );
 }
