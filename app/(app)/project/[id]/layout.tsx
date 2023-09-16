@@ -6,11 +6,10 @@ import { currentUser } from "@clerk/nextjs";
 import { notFound, redirect } from "next/navigation";
 import { ReactNode } from "react";
 import Header from "@/components/header";
-import { Skeleton } from "@/components/ui/skeleton";
-import { UserButton } from "@clerk/nextjs";
-import { ClerkLoading, ClerkLoaded } from "@clerk/nextjs";
+
 import { Fragment } from "react";
 import SheetMenu from "@/components/sheet-menu";
+import AuthElement from "@/components/auth-element";
 
 type ProjectIdLayoutProps = {
     children: ReactNode;
@@ -108,19 +107,6 @@ export default async function ProjectIdLayout({
                 />
                 <div className="flex-1">{children}</div>
             </div>
-        </Fragment>
-    );
-}
-
-function AuthElement() {
-    return (
-        <Fragment>
-            <ClerkLoading>
-                <Skeleton className="aspect-square w-10 rounded-full" />
-            </ClerkLoading>
-            <ClerkLoaded>
-                <UserButton afterSignOutUrl={urls.auth.login} />
-            </ClerkLoaded>
         </Fragment>
     );
 }
