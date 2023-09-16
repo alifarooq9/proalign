@@ -11,7 +11,7 @@ type HeaderProps = {
     className?: string;
     LinksElement?: () => JSX.Element;
     AuthElement: () => JSX.Element;
-    SheetMenu: JSX.Element;
+    SheetMenu?: JSX.Element;
 };
 
 export default function Header({
@@ -30,7 +30,9 @@ export default function Header({
             >
                 <nav className="flex place-items-center space-x-8">
                     <div className="flex place-items-center space-x-4 xl:space-x-0">
-                        <div className="block xl:hidden">{SheetMenu}</div>
+                        {SheetMenu && (
+                            <div className="block xl:hidden">{SheetMenu}</div>
+                        )}
 
                         <Link href="/" className="flex place-items-center">
                             <Icons.logo className="mr-1.5 h-5 w-5" />
